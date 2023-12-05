@@ -77,6 +77,11 @@ public struct PortableExecutable: Hashable, Equatable, Sendable {
         self.sections = sections
     }
     
+    /// The name of the executable
+    public var name: String {
+        url.lastPathComponent
+    }
+    
     private func rsrc(fileHandle: FileHandle, types: [ResourceType]? = nil) -> ResourceDirectoryTable? {
         if let resourceSection = sections.first(where: { $0.name == ".rsrc" }) {
             return ResourceDirectoryTable(
@@ -87,10 +92,6 @@ public struct PortableExecutable: Hashable, Equatable, Sendable {
         } else {
             return nil
         }
-    }
-    
-    public var name: String {
-        url.lastPathComponent
     }
     
     /// Resource Directory Table
@@ -105,6 +106,7 @@ public struct PortableExecutable: Hashable, Equatable, Sendable {
         return rsrc(fileHandle: fileHandle)
     }
     
+    /// All icon data found in the `.rsrc` section
     public var iconData: [Data]? {
         guard let fileHandle = try? FileHandle(forReadingFrom: url) else {
             return nil
@@ -117,12 +119,7 @@ public struct PortableExecutable: Hashable, Equatable, Sendable {
         return rsrc.allEntries
             .compactMap { entry -> Data? in
                 guard let offset = entry.resolveRVA(sections: sections) else { return nil }
-                do {
-                    try fileHandle.seek(toOffset: UInt64(offset))
-                    return try fileHandle.read(upToCount: Int(entry.size))
-                } catch {
-                    return nil
-                }
+                return fileHandle.loadData(fromByteOffset: UInt64(offset), upToCount: Int(entry.size))
             }
     }
 }
