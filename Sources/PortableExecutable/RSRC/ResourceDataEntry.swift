@@ -43,7 +43,7 @@ public struct ResourceDataEntry: Hashable, Equatable, Sendable {
     /// - Parameter sections: The sections this entry is part of.
     ///
     /// - Returns: The offset to the data
-    public func resolveRVA(sections: [PortableExecutable.Section]) -> UInt32? {
+    public func resolveRVA(sections: [Section]) -> UInt32? {
         sections
             .first { section in
                 section.virtualAddress <= dataRVA && dataRVA < (section.virtualAddress + section.virtualSize)

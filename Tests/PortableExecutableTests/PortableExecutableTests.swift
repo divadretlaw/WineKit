@@ -1,12 +1,12 @@
 //
 //  PortableExecutableTests.swift
-//  WineKit
+//  PortableExecutable
 //
 //  Created by David Walter on 04.12.23.
 //
 
 import XCTest
-@testable import WineKit
+@testable import PortableExecutable
 
 final class PortableExecutableTests: XCTestCase {
     func testPortableExecutable32() {
@@ -30,11 +30,11 @@ final class PortableExecutableTests: XCTestCase {
     }
     
     func testCOFFHeaderMemoryLayout() async throws {
-        XCTAssertEqual(MemoryLayout<PortableExecutable.COFFHeader>.size, 24)
+        XCTAssertEqual(MemoryLayout<COFFHeader>.size, 24)
     }
     
     func testSectionMemoryLayout() async throws {
-        XCTAssertEqual(MemoryLayout<PortableExecutable.Section>.size, 40)
+        XCTAssertEqual(MemoryLayout<Section>.size, 40)
     }
     
     func testResourceDirectoryEntryMemoryLayout() async throws {

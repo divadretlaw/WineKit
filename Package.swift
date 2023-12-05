@@ -10,15 +10,26 @@ let package = Package(
         .library(
             name: "WineKit",
             targets: ["WineKit"]
+        ),
+        .library(
+            name: "PortableExecutable",
+            targets: ["PortableExecutable"]
         )
     ],
     targets: [
         .target(
-            name: "WineKit"
+            name: "WineKit", dependencies: ["PortableExecutable"]
+        ),
+        .target(
+            name: "PortableExecutable"
         ),
         .testTarget(
             name: "WineKitTests",
             dependencies: ["WineKit"]
+        ),
+        .testTarget(
+            name: "PortableExecutableTests",
+            dependencies: ["PortableExecutable"]
         )
     ]
 )

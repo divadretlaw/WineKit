@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import PortableExecutable
 
 public final class TaskManager: ObservableObject {
     public static let shared = TaskManager()
