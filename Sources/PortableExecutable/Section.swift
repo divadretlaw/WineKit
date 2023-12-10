@@ -36,7 +36,7 @@ public struct Section: Hashable, Equatable, Sendable {
     /// The number of line-number entries for the section.
     public let numberOfLineNumbers: UInt16
     /// The flags that describe the characteristics of the section
-    private let _characteristics: UInt32
+    public let characteristics: SectionFlag
     
     init?(fileHandle: FileHandle, offset: UInt64) {
         var offset = offset
@@ -58,7 +58,8 @@ public struct Section: Hashable, Equatable, Sendable {
         offset.move(by: UInt16.self)
         self.numberOfLineNumbers = fileHandle.load(fromByteOffset: offset, as: UInt16.self) ?? 0
         offset.move(by: UInt16.self)
-        self._characteristics = fileHandle.load(fromByteOffset: offset, as: UInt32.self) ?? 0
+        let characteristics = fileHandle.load(fromByteOffset: offset, as: UInt32.self) ?? 0
+        self.characteristics = SectionFlag(rawValue: characteristics)
         offset.move(by: UInt32.self)
     }
     
@@ -71,10 +72,5 @@ public struct Section: Hashable, Equatable, Sendable {
         } else {
             return nil
         }
-    }
-    
-    /// The flags that describe the characteristics of the section
-    public var characteristics: Set<SectionFlag> {
-        .init(rawValue: _characteristics)
     }
 }

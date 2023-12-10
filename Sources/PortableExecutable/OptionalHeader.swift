@@ -61,7 +61,7 @@ public struct OptionalHeader: Hashable, Equatable, Sendable {
     /// For more information, see ``WindowsSubsystem``.
     public let subsystem: WindowsSubsystem
     /// For more information, see ``DLLCharacteristic``
-    private let _dllCharacteristics: UInt16
+    public let dllCharacteristics: DLLCharacteristic
     /// The size of the stack to reserve.
     public let sizeOfStackReserve: UInt32
     /// The size of the stack to commit.
@@ -167,7 +167,8 @@ public struct OptionalHeader: Hashable, Equatable, Sendable {
         self.subsystem = WindowsSubsystem(rawValue: subsystem) ?? .unknown
         offset.move(by: UInt16.self)
         
-        self._dllCharacteristics = fileHandle.load(fromByteOffset: offset, as: UInt16.self) ?? 0
+        let dllCharacteristics = fileHandle.load(fromByteOffset: offset, as: UInt16.self) ?? 0
+        self.dllCharacteristics = DLLCharacteristic(rawValue: dllCharacteristics)
         
         self.sizeOfStackReserve = fileHandle.load(fromByteOffset: offset, as: UInt32.self) ?? 0
         offset.move(by: UInt32.self)
@@ -188,10 +189,5 @@ public struct OptionalHeader: Hashable, Equatable, Sendable {
         
         self.numberOfRvaAndSizes = fileHandle.load(fromByteOffset: offset, as: UInt32.self) ?? 0
         offset.move(by: UInt32.self)
-    }
-    
-    /// For more information, see ``DLLCharacteristic``
-    public var dllCharacteristics: Set<DLLCharacteristic> {
-        .init(rawValue: _dllCharacteristics)
     }
 }

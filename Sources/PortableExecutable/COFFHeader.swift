@@ -37,7 +37,7 @@ public struct COFFHeader: Hashable, Equatable, Sendable {
     /// The flags that indicate the attributes of the file.
     ///
     /// For specific flag values, see ``Characteristic``.
-    private let _characteristics: UInt16
+    public let characteristics: Characteristic
     
     init?(fileHandle: FileHandle, offset: UInt64) {
         var offset = offset
@@ -71,19 +71,13 @@ public struct COFFHeader: Hashable, Equatable, Sendable {
         self.sizeOfOptionalHeader = fileHandle.load(fromByteOffset: offset, as: UInt16.self) ?? 0
         offset.move(by: UInt16.self)
         
-        self._characteristics = fileHandle.load(fromByteOffset: offset, as: UInt16.self) ?? 0
+        let characteristics = fileHandle.load(fromByteOffset: offset, as: UInt16.self) ?? 0
+        self.characteristics = Characteristic(rawValue: characteristics)
         offset.move(by: UInt16.self)
     }
     
     /// The time the file was created.
     public var timeDateStamp: Date {
         Date(timeIntervalSince1970: TimeInterval(_timeDateStamp))
-    }
-    
-    /// The flags that indicate the attributes of the file.
-    ///
-    /// For specific flag values, see ``Characteristic``.
-    public var characteristics: Set<Characteristic> {
-        .init(rawValue: _characteristics)
     }
 }

@@ -20,7 +20,13 @@ import Foundation
 /// For more information see
 /// [PE Format - Section Flags](https://learn.microsoft.com/en-us/windows/win32/debug/pe-format#section-flags)
 /// on *Microsoft Learn*.
-public enum SectionFlag: UInt32, CaseIterable, Hashable, Equatable, CustomStringConvertible, Sendable {
+public struct SectionFlag: OptionSet, Hashable, Equatable, CustomStringConvertible, Sendable {
+    public var rawValue: UInt32
+    
+    public init(rawValue: UInt32) {
+        self.rawValue = rawValue
+    }
+    
     // case reserved = 0x00000000
     // case reserved = 0x00000001
     // case reserved = 0x00000002
@@ -29,30 +35,30 @@ public enum SectionFlag: UInt32, CaseIterable, Hashable, Equatable, CustomString
     ///
     /// This flag is obsolete and is replaced by ``SectionFlag/algin1Bytes``.
     /// This is valid only for object files.
-    case typeNoPad = 0x00000008
+    public static let typeNoPad = SectionFlag(rawValue: 0x00000008)
     // case reserved = 0x00000010
     /// The section contains executable code
-    case cntCode = 0x00000020
+    public static let  cntCode = SectionFlag(rawValue: 0x00000020)
     /// The section contains initialized data
-    case cntInitializedData = 0x00000040
+    public static let  cntInitializedData = SectionFlag(rawValue: 0x00000040)
     /// The section contains uninitialized data
-    case cntUninitializedData = 0x00000080
+    public static let  cntUninitializedData = SectionFlag(rawValue: 0x00000080)
     // case reserved = 0x00000100
     /// The section contains comments or other information
     ///
     /// The `.drectve` section has this type. This is valid for object files only.
-    case lnkInfo = 0x00000200
+    public static let  lnkInfo = SectionFlag(rawValue: 0x00000200)
     // case reserved = 0x00000400
     /// The section will not become part of the image
     ///
     /// This is valid only for object files.
-    case lnkRemove = 0x00000800
+    public static let  lnkRemove = SectionFlag(rawValue: 0x00000800)
     /// The section contains COMDAT data
     ///
     /// This is valid only for object files.
-    case lnkCOMDAT = 0x00001000
+    public static let  lnkCOMDAT = SectionFlag(rawValue: 0x00001000)
     /// The section contains data referenced through the global pointer (GP)
-    case gprel = 0x00008000
+    public static let  gprel = SectionFlag(rawValue: 0x00008000)
     // case reserved = 0x00010000
     // case reserved = 0x00020000
     // case reserved  = 0x00040000
@@ -60,75 +66,75 @@ public enum SectionFlag: UInt32, CaseIterable, Hashable, Equatable, CustomString
     /// Align data on a 1-byte boundary
     ///
     /// Valid only for object files.
-    case algin1Bytes = 0x00100000
+    public static let  algin1Bytes = SectionFlag(rawValue: 0x00100000)
     /// Align data on a 2-byte boundary
     ///
     /// Valid only for object files.
-    case algin2Bytes = 0x00200000
+    public static let  algin2Bytes = SectionFlag(rawValue: 0x00200000)
     /// Align data on a 4-byte boundary
     ///
     /// Valid only for object files.
-    case algin4Bytes = 0x00300000
+    public static let  algin4Bytes = SectionFlag(rawValue: 0x00300000)
     /// Align data on a 8-byte boundary
     ///
     /// Valid only for object files.
-    case algin8Bytes = 0x00400000
+    public static let  algin8Bytes = SectionFlag(rawValue: 0x00400000)
     /// Align data on a 16-byte boundary
     ///
     /// Valid only for object files.
-    case algin16Bytes = 0x00500000
+    public static let  algin16Bytes = SectionFlag(rawValue: 0x00500000)
     /// Align data on a 32-byte boundary
     ///
     /// Valid only for object files.
-    case algin32Bytes = 0x00600000
+    public static let  algin32Bytes = SectionFlag(rawValue: 0x00600000)
     /// Align data on a 64-byte boundary
     ///
     /// Valid only for object files.
-    case algin64Bytes = 0x00700000
+    public static let  algin64Bytes = SectionFlag(rawValue: 0x00700000)
     /// Align data on a 128-byte boundary
     ///
     /// Valid only for object files.
-    case algin128Bytes = 0x00800000
+    public static let  algin128Bytes = SectionFlag(rawValue: 0x00800000)
     /// Align data on a 256-byte boundary
     ///
     /// Valid only for object files.
-    case algin256Bytes = 0x00900000
+    public static let  algin256Bytes = SectionFlag(rawValue: 0x00900000)
     /// Align data on a 512-byte boundary
     ///
     /// Valid only for object files.
-    case algin512Bytes = 0x00A00000
+    public static let  algin512Bytes = SectionFlag(rawValue: 0x00A00000)
     /// Align data on a 1024-byte boundary
     ///
     /// Valid only for object files.
-    case algin1024Bytes = 0x00B00000
+    public static let  algin1024Bytes = SectionFlag(rawValue: 0x00B00000)
     /// Align data on a 2048-byte boundary
     ///
     /// Valid only for object files.
-    case algin2048Bytes = 0x00C00000
+    public static let  algin2048Bytes = SectionFlag(rawValue: 0x00C00000)
     /// Align data on a 4096-byte boundary
     ///
     /// Valid only for object files.
-    case algin4096Bytes = 0x00D00000
+    public static let  algin4096Bytes = SectionFlag(rawValue: 0x00D00000)
     /// Align data on a 8192-byte boundary
     ///
     /// Valid only for object files.
-    case algin8192Bytes = 0x00E00000
+    public static let  algin8192Bytes = SectionFlag(rawValue: 0x00E00000)
     /// The section contains extended relocations
-    case lnkNrelocOvfl = 0x01000000
+    public static let  lnkNrelocOvfl = SectionFlag(rawValue: 0x01000000)
     /// The section can be discarded as needed
-    case memDiscardable = 0x02000000
+    public static let  memDiscardable = SectionFlag(rawValue: 0x02000000)
     /// The section cannot be cached
-    case memNotCached = 0x04000000
+    public static let  memNotCached = SectionFlag(rawValue: 0x04000000)
     /// The section is not pageable
-    case memNotPaged = 0x08000000
+    public static let  memNotPaged = SectionFlag(rawValue: 0x08000000)
     /// The section can be shared in memory
-    case memShared = 0x10000000
+    public static let  memShared = SectionFlag(rawValue: 0x10000000)
     /// The section can be executed as code
-    case memExecute = 0x20000000
+    public static let  memExecute = SectionFlag(rawValue: 0x20000000)
     /// The section can be read
-    case memRead = 0x40000000
+    public static let  memRead = SectionFlag(rawValue: 0x40000000)
     /// The section can be written to
-    case memWrite = 0x80000000
+    public static let  memWrite = SectionFlag(rawValue: 0x80000000)
     
     // MARK: - CustomStringConvertible
     
@@ -195,17 +201,9 @@ public enum SectionFlag: UInt32, CaseIterable, Hashable, Equatable, CustomString
             return "The section can be read"
         case .memWrite:
             return "The section can be written to"
+        default:
+            return "Option is reserved for future use"
         }
         // swiftlint:enable line_length
-    }
-}
-
-extension Set where Element == SectionFlag {
-    init(rawValue: UInt32) {
-        let values = SectionFlag.allCases
-            .filter { flag in
-                (flag.rawValue & rawValue) != 0
-            }
-        self = Set(values)
     }
 }

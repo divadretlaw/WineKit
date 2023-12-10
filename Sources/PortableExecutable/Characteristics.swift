@@ -12,23 +12,29 @@ import Foundation
 /// For more information see
 /// [PE Format - Characteristics](https://learn.microsoft.com/en-us/windows/win32/debug/pe-format#characteristics)
 /// on *Microsoft Learn*.
-public enum Characteristic: UInt16, CaseIterable, Hashable, Equatable, CustomStringConvertible, Sendable {
-    case relocsStripped = 0x0001
-    case executableImage = 0x0002
-    case lineNumsStripped = 0x0004
-    case localSymsStripped = 0x0008
-    case aggressiveWSTrim = 0x0010
-    case largeAddressAware = 0x0020
-    // case reserved = 0x0040
-    case bytesReservedLo = 0x0080
-    case machine32bit = 0x0100
-    case debugStripped = 0x0200
-    case removableRunFromSwap = 0x0400
-    case netRunFromSwap = 0x0800
-    case system = 0x1000
-    case dll = 0x2000
-    case upSystemOnly = 0x4000
-    case bytesReservedHi = 0x8000
+public struct Characteristic: OptionSet, Hashable, Equatable, CustomStringConvertible, Sendable {
+    public let rawValue: UInt16
+    
+    public init(rawValue: UInt16) {
+        self.rawValue = rawValue
+    }
+    
+    public static let relocsStripped = Characteristic(rawValue: 0x0001)
+    public static let executableImage = Characteristic(rawValue: 0x0002)
+    public static let lineNumsStripped = Characteristic(rawValue: 0x0004)
+    public static let localSymsStripped = Characteristic(rawValue: 0x0008)
+    public static let aggressiveWSTrim = Characteristic(rawValue: 0x0010)
+    public static let largeAddressAware = Characteristic(rawValue: 0x0020)
+    // public static let reserved = 0x0040
+    public static let bytesReservedLo = Characteristic(rawValue: 0x0080)
+    public static let machine32bit = Characteristic(rawValue: 0x0100)
+    public static let debugStripped = Characteristic(rawValue: 0x0200)
+    public static let removableRunFromSwap = Characteristic(rawValue: 0x0400)
+    public static let netRunFromSwap = Characteristic(rawValue: 0x0800)
+    public static let system = Characteristic(rawValue: 0x1000)
+    public static let dll = Characteristic(rawValue: 0x2000)
+    public static let upSystemOnly = Characteristic(rawValue: 0x4000)
+    public static let bytesReservedHi = Characteristic(rawValue: 0x8000)
     
     // MARK: - CustomStringConvertible
     
@@ -65,17 +71,9 @@ public enum Characteristic: UInt16, CaseIterable, Hashable, Equatable, CustomStr
             return "The file should be run only on a uniprocessor machine"
         case .bytesReservedHi:
             return "Big endian: the MSB precedes the LSB in memory. This flag is deprecated and should be zero"
+        default:
+            return "Option is reserved for future use"
         }
         // swiftlint:enable line_length
-    }
-}
-
-extension Set where Element == Characteristic {
-    init(rawValue: UInt16) {
-        let values = Characteristic.allCases
-            .filter { flag in
-                (flag.rawValue & rawValue) != 0
-            }
-        self = Set(values)
     }
 }
