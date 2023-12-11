@@ -12,7 +12,8 @@ public enum WineEnvironment: Identifiable, Hashable, Equatable, Codable {
     case gptk
     case custom(String)
     
-    var url: URL {
+    /// URL to the wine binaries
+    public var url: URL {
         switch self {
         case let .wine(version):
             switch version {
