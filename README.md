@@ -77,15 +77,26 @@ Open the Wine Task Manager
 try await wine.commands.taskManager()
 ```
 
-### Portable Executable
+### `WindowsFileKit`
 
-Parse a Microsoft Portable Executable
+Parse windows files
+
+#### Portable Executable
 
 For more information see [PE Format](https://learn.microsoft.com/en-us/windows/win32/debug/pe-format) on *Microsoft Learn*.
 
 ```swift
 let url: URL = "/path/to/peFile"
 let peFile = PortableExecutable(url: url)
+```
+
+#### Shell Link
+
+For more information see [Shell Link](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/) on *Microsoft Learn*.
+
+```swift
+let url: URL = "/path/to/shellLink"
+let shellLink = ShellLink(url: url)
 ```
 
 ## License

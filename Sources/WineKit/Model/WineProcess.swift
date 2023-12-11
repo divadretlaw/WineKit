@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import PortableExecutable
+import WindowsFileKit
 import OSLog
 
 /// A `Process` started by WineKit

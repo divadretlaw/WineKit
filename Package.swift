@@ -12,24 +12,25 @@ let package = Package(
             targets: ["WineKit"]
         ),
         .library(
-            name: "PortableExecutable",
-            targets: ["PortableExecutable"]
+            name: "WindowsFileKit",
+            targets: ["WindowsFileKit"]
         )
     ],
     targets: [
         .target(
-            name: "WineKit", dependencies: ["PortableExecutable"]
+            name: "WineKit", dependencies: ["WindowsFileKit"]
         ),
         .target(
-            name: "PortableExecutable"
+            name: "WindowsFileKit"
         ),
         .testTarget(
             name: "WineKitTests",
             dependencies: ["WineKit"]
         ),
         .testTarget(
-            name: "PortableExecutableTests",
-            dependencies: ["PortableExecutable"]
+            name: "WindowsFileKitTests",
+            dependencies: ["WindowsFileKit"],
+            resources: [.process("Resources")]
         )
     ]
 )

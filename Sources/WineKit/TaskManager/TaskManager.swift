@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import PortableExecutable
+import WindowsFileKit
 
 public final class TaskManager: ObservableObject {
     public static let shared = TaskManager()

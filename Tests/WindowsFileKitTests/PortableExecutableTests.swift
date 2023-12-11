@@ -1,12 +1,12 @@
 //
 //  PortableExecutableTests.swift
-//  PortableExecutable
+//  WindowsFileKit
 //
 //  Created by David Walter on 04.12.23.
 //
 
 import XCTest
-@testable import PortableExecutable
+@testable import WindowsFileKit
 
 final class PortableExecutableTests: XCTestCase {
     func testPortableExecutable32() {
@@ -30,15 +30,15 @@ final class PortableExecutableTests: XCTestCase {
     }
     
     func testCOFFHeaderMemoryLayout() async throws {
-        XCTAssertEqual(MemoryLayout<COFFHeader>.size, 24)
+        XCTAssertEqual(MemoryLayout<PortableExecutable.COFFHeader>.size, 24)
     }
     
     func testSectionMemoryLayout() async throws {
-        XCTAssertEqual(MemoryLayout<Section>.size, 40)
+        XCTAssertEqual(MemoryLayout<PortableExecutable.Section>.size, 40)
     }
     
     func testResourceDirectoryEntryMemoryLayout() async throws {
-        XCTAssertEqual(MemoryLayout<ResourceDirectoryEntry.Name>.size, 8)
-        XCTAssertEqual(MemoryLayout<ResourceDirectoryEntry.ID>.size, 8)
+        XCTAssertEqual(MemoryLayout<PortableExecutable.ResourceDirectoryEntry.Name>.size, 8)
+        XCTAssertEqual(MemoryLayout<PortableExecutable.ResourceDirectoryEntry.ID>.size, 8)
     }
 }
