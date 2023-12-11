@@ -8,21 +8,53 @@
 import Foundation
 import OSLog
 
-public struct Wine: Hashable, Equatable, Codable {
-    let folder: URL
-    let prefix: URL
-    let environment: [String: String]
+/// Run Windows Executables
+public final class Wine: Hashable, Equatable {
+    let executable: URL
+    let bottle: Bottle
+    
+    // MARK: - Init - Executable
     
     /// Create a Wine instance
     /// 
     /// - Parameters:
-    ///   - binFolder: The wine `bin` folder containg the wine binaries.
-    ///   - prefix: The prefix to use in wine.
-    ///   - environment: The environment to use for this wine instance.
-    public init(binFolder: URL, prefix: URL, environment: [String: String] = [:]) {
-        self.folder = binFolder
-        self.prefix = prefix
-        self.environment = environment
+    ///   - executable: The wine executable binary.
+    ///   - bottle: The prefix to use in wine.
+    public init(executable: URL, bottle: Bottle = .default) {
+        self.executable = executable
+        self.bottle = bottle
+    }
+    
+    /// Create a Wine instance
+    ///
+    /// - Parameters:
+    ///   - executable: The wine executable binary.
+    ///   - bottle: The prefix to use in wine.
+    public init(executable: URL, bottle: URL) {
+        self.executable = executable
+        self.bottle = Bottle(url: bottle)
+    }
+    
+    // MARK: Init - Folder
+    
+    /// Create a Wine Server instance
+    ///
+    /// - Parameters:
+    ///   - folder: The wine binary folder.
+    ///   - bottle: The prefix to use in wine.
+    public init(folder: URL, bottle: Bottle = .default) {
+        self.executable = folder.appending(path: "wine64", directoryHint: .notDirectory)
+        self.bottle = bottle
+    }
+    
+    /// Create a Wine Server instance
+    ///
+    /// - Parameters:
+    ///   - folder: The wine binary folder.
+    ///   - bottle: The prefix to use in wine.
+    public init(folder: URL, bottle: URL) {
+        self.executable = folder.appending(path: "wine64", directoryHint: .notDirectory)
+        self.bottle = Bottle(url: bottle)
     }
     
     public var registry: WineRegistry {
@@ -31,10 +63,6 @@ public struct Wine: Hashable, Equatable, Codable {
     
     public var commands: WineCommands {
         WineCommands(wine: self)
-    }
-    
-    var wine: URL {
-        folder.appending(path: "wine64")
     }
     
     // MARK: - User
@@ -102,7 +130,7 @@ public struct Wine: Hashable, Equatable, Codable {
         environment: [String: String]? = nil
     ) async throws {
         let process = WineProcess(wine: self, arguments: arguments, environment: environment)
-        let stream = TaskManager.shared.runUser(process)
+        let stream = TaskManager.shared.runSystem(process)
         let logger = Logger(process: process)
         
         for await output in stream {
@@ -170,5 +198,30 @@ public struct Wine: Hashable, Equatable, Codable {
         }
         
         return log
+    }
+    
+    // MARK: - Setup
+    
+    public func setup(windows: WindowsVersion) async throws {
+        try FileManager.default.createDirectory(at: bottle.url, withIntermediateDirectories: true)
+        try await self.registry.changeWindowsVersion(windows)
+    }
+    
+    // MARK: - Hashable
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(executable)
+        hasher.combine(bottle)
+    }
+    
+    // MARK: - Equatable
+    
+    public static func == (lhs: Wine, rhs: Wine) -> Bool {
+        guard lhs.executable == rhs.executable,
+              lhs.bottle == rhs.bottle
+        else {
+            return false
+        }
+        return true
     }
 }

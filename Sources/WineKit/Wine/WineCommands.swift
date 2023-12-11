@@ -8,8 +8,8 @@
 import Foundation
 
 /// A collection of helper commands
-public struct WineCommands {
-    private let wine: Wine
+public final class WineCommands {
+    private weak var wine: Wine!
     
     init(wine: Wine) {
         self.wine = wine

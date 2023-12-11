@@ -10,9 +10,9 @@ Run Wine from Swift
 ### Wine
 
 ```swift
-let binFolder: URL = "/path/to/wine/bin"
-let prefix: URL = "/path/to/bottle"
-let wine = Wine(binFolder: binFolder, prefix: prefix)
+let folder: URL = "/path/to/wine/bin"
+let bottle: URL = "/path/to/bottle"
+let wine = Wine(folder: folder, bottle: bottle)
 ```
 
 #### Registry

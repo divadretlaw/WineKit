@@ -9,8 +9,8 @@ import Foundation
 import OSLog
 
 /// A collection of helpers to configure Wine
-public struct WineRegistry {
-    private let wine: Wine
+public final class WineRegistry {
+    private weak var wine: Wine!
     
     init(wine: Wine) {
         self.wine = wine

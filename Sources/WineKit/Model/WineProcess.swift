@@ -19,13 +19,13 @@ public final class WineProcess: Identifiable, Hashable, Equatable, CustomStringC
     
     init(wine: Wine, arguments: [String], environment: [String: String]?) {
         let process = Process()
-        process.executableURL = wine.wine
+        process.executableURL = wine.executable
         process.arguments = arguments
-        process.currentDirectoryURL = wine.folder
+        process.currentDirectoryURL = wine.bottle.url
         process.qualityOfService = .userInitiated
         
-        process.environment = ["WINEPREFIX": wine.prefix.path]
-            .merging(wine.environment) { _, new in
+        process.environment = [:]
+            .merging(wine.bottle.environment) { _, new in
                 new
             }
             .merging(environment) { _, new in

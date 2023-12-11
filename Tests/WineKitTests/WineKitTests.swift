@@ -66,4 +66,21 @@ final class WineKitTests: XCTestCase {
         dpi = try await wine.registry.dpi
         XCTAssertEqual(dpi, defaultDpi)
     }
+    
+    func testProgram() async throws {
+        let wine = try await WineLoader.wine
+        let wineServer = try await WineLoader.wineServer
+        
+        Task {
+            try await wine.commands.taskManager()
+        }
+        try await Task.sleep(for: .seconds(1))
+        XCTAssertFalse(TaskManager.shared.systemTasks.isEmpty)
+        
+        try await Task.sleep(for: .seconds(2))
+        
+        try wineServer.run(["-k"])
+        try await Task.sleep(for: .seconds(1))
+        XCTAssertTrue(TaskManager.shared.systemTasks.isEmpty)
+    }
 }
