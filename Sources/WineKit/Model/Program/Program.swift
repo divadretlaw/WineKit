@@ -87,7 +87,7 @@ public struct Program: Identifiable, Hashable, Equatable, Comparable {
         if create {
             try? FileManager.default.createDirectory(at: configFolder, withIntermediateDirectories: true)
         }
-        let fileName = url.path(relativeTo: url, percentEncoded: false).sha256
+        let fileName = self.url.path(relativeTo: url, percentEncoded: false).sha256
         return configFolder.appending(path: "\(fileName).plist", directoryHint: .notDirectory)
     }
     
