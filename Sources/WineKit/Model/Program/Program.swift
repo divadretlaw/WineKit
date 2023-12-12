@@ -167,6 +167,13 @@ public struct Program: Identifiable, Hashable, Equatable, Comparable {
     // MARK: - Comparable
     
     public static func < (lhs: Program, rhs: Program) -> Bool {
-        lhs.name.caseInsensitiveCompare(rhs.name) == .orderedAscending
+        switch lhs.name.caseInsensitiveCompare(rhs.name) {
+        case .orderedAscending:
+            return true
+        case .orderedSame:
+            return lhs.url.absoluteString < rhs.url.absoluteString
+        case .orderedDescending:
+            return false
+        }
     }
 }
