@@ -9,7 +9,7 @@ import Foundation
 
 /// A collection of helper commands
 public final class WineCommands {
-    private weak var wine: Wine!
+    private let wine: Wine
     
     init(wine: Wine) {
         self.wine = wine

@@ -9,7 +9,7 @@ import Foundation
 import OSLog
 
 /// Run Windows Executables
-public final class Wine: Hashable, Equatable {
+public struct Wine: Hashable, Equatable {
     let executable: URL
     let bottle: Bottle
     

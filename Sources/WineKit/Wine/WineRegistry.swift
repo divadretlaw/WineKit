@@ -10,7 +10,7 @@ import OSLog
 
 /// A collection of helpers to configure Wine
 public final class WineRegistry {
-    private weak var wine: Wine!
+    private let wine: Wine
     
     init(wine: Wine) {
         self.wine = wine
