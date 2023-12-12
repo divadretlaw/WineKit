@@ -12,6 +12,21 @@ public enum WineEnvironment: Identifiable, Hashable, Equatable, Codable {
     case gptk
     case custom(String)
     
+    public init?(string: String) {
+        switch string {
+        case "/Applications/Wine Stable.app/Contents/Resources/wine/bin":
+            self = .wine(.stable)
+        case "/Applications/Wine Devel.app/Contents/Resources/wine/bin":
+            self = .wine(.development)
+        case "/Applications/Wine Staging.app/Contents/Resources/wine/bin":
+            self = .wine(.staging)
+        case "/usr/local/opt/game-porting-toolkit/bin":
+            self = .gptk
+        default:
+            self = .custom(string)
+        }
+    }
+    
     /// URL to the wine binaries
     public var url: URL {
         switch self {
