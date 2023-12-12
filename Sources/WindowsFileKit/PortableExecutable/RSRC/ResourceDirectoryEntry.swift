@@ -45,7 +45,7 @@ extension PortableExecutable {
         
         /// A directory entry from the id table entries.
         public struct ID { // swiftlint:disable:this type_name
-                           /// The type of the entry
+            /// The type of the entry
             public let type: ResourceType?
             private let _offset: UInt32
             

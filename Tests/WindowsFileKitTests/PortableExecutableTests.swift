@@ -29,6 +29,16 @@ final class PortableExecutableTests: XCTestCase {
         XCTAssertNil(peFile.optionalHeader?.baseOfData)
     }
     
+    func testIconData() {
+        let url = URL(filePath: "/Applications/Wine Stable.app/Contents/Resources/wine/lib/wine/x86_64-windows/iexplore.exe")
+        let peFile = PortableExecutable(url: url)
+        XCTAssertNotNil(peFile)
+        guard let peFile else { return }
+        XCTAssertNotNil(peFile.iconData)
+        guard let iconData = peFile.iconData else { return }
+        XCTAssertFalse(iconData.isEmpty)
+    }
+    
     func testCOFFHeaderMemoryLayout() async throws {
         XCTAssertEqual(MemoryLayout<PortableExecutable.COFFHeader>.size, 24)
     }

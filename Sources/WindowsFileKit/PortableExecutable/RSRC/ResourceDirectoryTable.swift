@@ -125,7 +125,11 @@ extension PortableExecutable {
         }
         
         public var allEntries: [ResourceDataEntry] {
-            entries + subtables.flatMap { $0.entries }
+            var entries = self.entries
+            for subtable in subtables {
+                entries.append(contentsOf: subtable.allEntries)
+            }
+            return entries
         }
     }
 }
