@@ -10,16 +10,16 @@ import OSLog
 
 public struct WineServer: Hashable, Equatable {
     let executable: URL
-    let bottle: Bottle
+    let prefix: Prefix
     
     /// Create a Wine Server instance
     ///
     /// - Parameters:
     ///   - executable: The wine server executable binary.
     ///   - bottle: The prefix to use in wine.
-    public init(executable: URL, bottle: Bottle) {
+    public init(executable: URL, prefix: Prefix) {
         self.executable = executable
-        self.bottle = bottle
+        self.prefix = prefix
     }
     
     /// Create a Wine Server instance
@@ -27,9 +27,9 @@ public struct WineServer: Hashable, Equatable {
     /// - Parameters:
     ///   - executable: The wine server executable binary.
     ///   - bottle: The prefix to use in wine.
-    public init(executable: URL, bottle url: URL) {
+    public init(executable: URL, prefix url: URL) {
         self.executable = executable
-        self.bottle = Bottle(url: url)
+        self.prefix = Prefix(url: url)
     }
     
     /// Create a Wine Server instance
@@ -37,9 +37,9 @@ public struct WineServer: Hashable, Equatable {
     /// - Parameters:
     ///   - folder: The wine binary folder.
     ///   - bottle: The prefix to use in wine.
-    public init(folder: URL, bottle: Bottle) {
+    public init(folder: URL, prefix: Prefix) {
         self.executable = folder.appending(path: "wineserver")
-        self.bottle = bottle
+        self.prefix = prefix
     }
     
     /// Create a Wine Server instance
@@ -47,9 +47,9 @@ public struct WineServer: Hashable, Equatable {
     /// - Parameters:
     ///   - folder: The wine binary folder.
     ///   - bottle: The prefix to use in wine.
-    public init(folder: URL, bottle url: URL) {
+    public init(folder: URL, prefix url: URL) {
         self.executable = folder.appending(path: "wineserver")
-        self.bottle = Bottle(url: url)
+        self.prefix = Prefix(url: url)
     }
     
     public func run(_ arguments: [String], environment: [String: String]? = nil) throws {
@@ -60,10 +60,10 @@ public struct WineServer: Hashable, Equatable {
         process.standardInput = FileHandle.nullDevice
         process.standardOutput = FileHandle.nullDevice
         process.standardError = FileHandle.nullDevice
-        process.currentDirectoryURL = bottle.url
+        process.currentDirectoryURL = prefix.url
         
         process.environment = [:]
-            .merging(bottle.environment) { _, new in
+            .merging(prefix.environment) { _, new in
                 new
             }
             .merging(environment) { _, new in

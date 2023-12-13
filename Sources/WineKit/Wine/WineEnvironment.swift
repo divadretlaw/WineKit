@@ -12,7 +12,7 @@ public enum WineEnvironment: Identifiable, Hashable, Equatable, Codable {
     case gptk
     case custom(String)
     
-    public init?(string: String) {
+    public init(string: String) {
         switch string {
         case "/Applications/Wine Stable.app/Contents/Resources/wine/bin":
             self = .wine(.stable)
@@ -57,5 +57,18 @@ public enum WineEnvironment: Identifiable, Hashable, Equatable, Codable {
         case let .custom(path):
             return "custom-\(path)"
         }
+    }
+    
+    // MARK: - Codable
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(url.path(percentEncoded: false))
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let url = try container.decode(String.self)
+        self.init(string: url)
     }
 }

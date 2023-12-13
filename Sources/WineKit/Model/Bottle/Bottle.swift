@@ -17,44 +17,45 @@ import OSLog
 
 /// A bottle represents a wine directory
 public struct Bottle: Identifiable, Hashable, Equatable, Comparable {
-    public static var `default`: Bottle {
-        Bottle(url: .defaultWinePrefix)
-    }
-    
     internal var identifier: BottleIdentifier
     
+    public var environment: WineEnvironment
     /// The name of the bottle
     public var name: String
     /// The icon of the bottle
     public var icon: BottleIcon
-    /// URL to the location of the bottle
-    public let url: URL
     /// Custom settings of the bottle
-    public var settings: BottleSettings
+    public var prefix: Prefix
     
     /// Initialize a ``Bottle`` from the given directory
     ///
     /// - Parameter url: The URL of the bottle.
-    ///
-    /// If no settings are found at the location the default settings will be used.
-    public init(url: URL) {
-        self.url = url
+    public init(url: URL) throws {
+        self.prefix = Prefix(url: url)
         
-        do {
-            let data = try Data(contentsOf: url.appending(path: ".config/bottle.plist"))
-            let reference = try PropertyListDecoder().decode(BottleReference.self, from: data)
-            
-            self.identifier = reference.identifier
-            self.name = reference.name
-            self.icon = reference.icon
-            self.settings = reference.settings
-        } catch {
-            let identifier = BottleIdentifier(url: url)
-            self.identifier = identifier
-            self.name = identifier.rawValue
-            self.icon = .systemName("waterbottle")
-            self.settings = BottleSettings()
-        }
+        let data = try Data(contentsOf: url.appending(path: ".config/bottle.plist"))
+        let reference = try PropertyListDecoder().decode(BottleReference.self, from: data)
+        
+        self.identifier = reference.identifier
+        self.environment = reference.wine
+        self.name = reference.name
+        self.icon = reference.icon
+    }
+    
+    /// Initialize a ``Bottle`` from the given prefix
+    ///
+    /// - Parameter url: The ``Prefix`` of the bottle.
+    public init(prefix: Prefix) throws {
+        let url = prefix.url
+        self.prefix = prefix
+        
+        let data = try Data(contentsOf: url.appending(path: ".config/bottle.plist"))
+        let reference = try PropertyListDecoder().decode(BottleReference.self, from: data)
+        
+        self.identifier = reference.identifier
+        self.environment = reference.wine
+        self.name = reference.name
+        self.icon = reference.icon
     }
     
     /// Create a new ``Bottle``
@@ -65,24 +66,52 @@ public struct Bottle: Identifiable, Hashable, Equatable, Comparable {
     ///   - url: The URL of the bottle.
     ///
     /// The bottle will not be setup automatically. Use ``Wine/setup(windows:)`` in order to actually create the bottle on disk.
-    public init(name: String, icon: BottleIcon, url: URL) {
+    public init(name: String, icon: BottleIcon, url: URL, wine: WineEnvironment) {
         let identifier = BottleIdentifier(url: url)
         self.identifier = identifier
         self.name = name
         self.icon = icon
-        self.url = url
-        self.settings = BottleSettings()
+        self.environment = wine
+        self.prefix = Prefix(url: url)
     }
     
-    /// The environment of the bottle
-    public var environment: [String: String] {
-        settings.environment
-            .merging(["WINEPREFIX": url.path(percentEncoded: false)]) { _, new in
-                new
-            }
+    var url: URL {
+        prefix.url
+    }
+    
+    /// The wine instance associated with this bottle
+    public var wine: Wine {
+        Wine(folder: environment.url, prefix: prefix)
+    }
+    
+    /// The wine server instance associated with this bottle
+    public var wineServer: WineServer {
+        WineServer(folder: environment.url, prefix: prefix)
+    }
+    
+    /// Run the url in the bottle
+    ///
+    /// - Parameter url: URL to an executable.
+    /// - Returns: The output of the executable
+    public func run(url: URL) async throws {
+        return try await wine.run(["start", "/unix", url.path(percentEncoded: false)])
+    }
+    
+    public func run(program: Program) async throws {
+        return try await wine.run([program.url.path(percentEncoded: false)], environment: program.settings.environment)
+    }
+    
+    /// Kills all programs running in the bottle
+    public func kill() throws {
+        return try wineServer.run(["-k"])
     }
     
     #if canImport(AppKit)
+    /// Open the 'C:\' drive of the bottle
+    public func openDrive() {
+        NSWorkspace.shared.open(url.appending(path: "drive_c"))
+    }
+    
     var nsImage: NSImage? {
         switch icon {
         case let .systemName(name):
@@ -167,7 +196,6 @@ public struct Bottle: Identifiable, Hashable, Equatable, Comparable {
         bottle.identifier = reference.identifier
         bottle.name = reference.name
         bottle.icon = reference.icon
-        bottle.settings = reference.settings
         self = bottle
     }
     
@@ -260,7 +288,7 @@ public struct Bottle: Identifiable, Hashable, Equatable, Comparable {
         hasher.combine(name)
         hasher.combine(icon)
         hasher.combine(url)
-        hasher.combine(settings)
+        hasher.combine(prefix)
     }
     
     // MARK: - Equatable
@@ -270,7 +298,7 @@ public struct Bottle: Identifiable, Hashable, Equatable, Comparable {
               lhs.name == rhs.name,
               lhs.icon == rhs.icon,
               lhs.url == rhs.url,
-              lhs.settings == rhs.settings
+              lhs.prefix == rhs.prefix
         else {
             return false
         }

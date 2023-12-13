@@ -10,7 +10,7 @@ import XCTest
 
 final class BottleTests: XCTestCase {
     func testEncodeBottle() async throws {
-        let bottle = Bottle(name: "Test", icon: .systemName("waterbottle"), url: FileManager.default.temporaryDirectory)
+        let bottle = Bottle(name: "Test", icon: .systemName("waterbottle"), url: FileManager.default.temporaryDirectory, wine: .wine(.stable))
         try await bottle.write()
         
         let data = try Data(contentsOf: FileManager.default.temporaryDirectory.appending(path: ".config/bottle.plist"))
@@ -22,10 +22,10 @@ final class BottleTests: XCTestCase {
     }
     
     func testEncodeDecode() async throws {
-        let bottle = Bottle(name: "Test", icon: .systemName("waterbottle"), url: FileManager.default.temporaryDirectory)
+        let bottle = Bottle(name: "Test", icon: .systemName("waterbottle"), url: FileManager.default.temporaryDirectory, wine: .wine(.stable))
         try await bottle.write()
         
-        let decodedBottle = Bottle(url: bottle.url)
+        let decodedBottle = try Bottle(url: bottle.url)
         XCTAssertEqual(bottle, decodedBottle)
     }
 }

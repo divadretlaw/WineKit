@@ -16,13 +16,13 @@ struct BottleReference: Hashable, Equatable, Codable {
     let name: String
     /// The icon of the bottle
     let icon: BottleIcon
-    /// Custom settings of the bottle
-    let settings: BottleSettings
+    /// The preferred wine environment of this bottle
+    let wine: WineEnvironment
     
     init(bottle: Bottle) {
         self.identifier = bottle.identifier
         self.name = bottle.name
         self.icon = bottle.icon
-        self.settings = bottle.settings
+        self.wine = bottle.environment
     }
 }

@@ -21,11 +21,11 @@ public final class WineProcess: Identifiable, Hashable, Equatable, CustomStringC
         let process = Process()
         process.executableURL = wine.executable
         process.arguments = arguments
-        process.currentDirectoryURL = wine.bottle.url
+        process.currentDirectoryURL = wine.prefix.url
         process.qualityOfService = .userInitiated
         
         process.environment = [:]
-            .merging(wine.bottle.environment) { _, new in
+            .merging(wine.prefix.environment) { _, new in
                 new
             }
             .merging(environment) { _, new in

@@ -11,7 +11,7 @@ import OSLog
 /// Run Windows Executables
 public struct Wine: Hashable, Equatable {
     let executable: URL
-    let bottle: Bottle
+    let prefix: Prefix
     
     // MARK: - Init - Executable
     
@@ -20,9 +20,9 @@ public struct Wine: Hashable, Equatable {
     /// - Parameters:
     ///   - executable: The wine executable binary.
     ///   - bottle: The prefix to use in wine.
-    public init(executable: URL, bottle: Bottle = .default) {
+    public init(executable: URL, prefix: Prefix = .default) {
         self.executable = executable
-        self.bottle = bottle
+        self.prefix = prefix
     }
     
     /// Create a Wine instance
@@ -30,9 +30,9 @@ public struct Wine: Hashable, Equatable {
     /// - Parameters:
     ///   - executable: The wine executable binary.
     ///   - bottle: The prefix to use in wine.
-    public init(executable: URL, bottle: URL) {
+    public init(executable: URL, prefix url: URL) {
         self.executable = executable
-        self.bottle = Bottle(url: bottle)
+        self.prefix = Prefix(url: url)
     }
     
     // MARK: Init - Folder
@@ -42,9 +42,9 @@ public struct Wine: Hashable, Equatable {
     /// - Parameters:
     ///   - folder: The wine binary folder.
     ///   - bottle: The prefix to use in wine.
-    public init(folder: URL, bottle: Bottle = .default) {
+    public init(folder: URL, prefix: Prefix = .default) {
         self.executable = folder.appending(path: "wine64", directoryHint: .notDirectory)
-        self.bottle = bottle
+        self.prefix = prefix
     }
     
     /// Create a Wine Server instance
@@ -52,9 +52,9 @@ public struct Wine: Hashable, Equatable {
     /// - Parameters:
     ///   - folder: The wine binary folder.
     ///   - bottle: The prefix to use in wine.
-    public init(folder: URL, bottle: URL) {
+    public init(folder: URL, prefix url: URL) {
         self.executable = folder.appending(path: "wine64", directoryHint: .notDirectory)
-        self.bottle = Bottle(url: bottle)
+        self.prefix = Prefix(url: url)
     }
     
     public var registry: WineRegistry {
@@ -203,7 +203,7 @@ public struct Wine: Hashable, Equatable {
     // MARK: - Setup
     
     public func setup(windows: WindowsVersion) async throws {
-        try FileManager.default.createDirectory(at: bottle.url, withIntermediateDirectories: true)
+        try FileManager.default.createDirectory(at: prefix.url, withIntermediateDirectories: true)
         try await self.registry.changeWindowsVersion(windows)
     }
     
@@ -211,14 +211,14 @@ public struct Wine: Hashable, Equatable {
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(executable)
-        hasher.combine(bottle)
+        hasher.combine(prefix)
     }
     
     // MARK: - Equatable
     
     public static func == (lhs: Wine, rhs: Wine) -> Bool {
         guard lhs.executable == rhs.executable,
-              lhs.bottle == rhs.bottle
+              lhs.prefix == rhs.prefix
         else {
             return false
         }

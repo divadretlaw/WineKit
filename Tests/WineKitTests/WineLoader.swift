@@ -18,7 +18,7 @@ enum WineLoader {
                 let executable = URL(filePath: "/Applications/Wine Stable.app/Contents/Resources/wine/bin/wine64", directoryHint: .isDirectory, relativeTo: nil)
                 let prefix = FileManager.default.temporaryDirectory.appending(path: UUID().uuidString)
                 try? FileManager.default.createDirectory(at: prefix, withIntermediateDirectories: true)
-                let wine = Wine(executable: executable, bottle: prefix)
+                let wine = Wine(executable: executable, prefix: prefix)
                 try await wine.registry.changeWindowsVersion(.windows10)
                 self._wine = wine
                 return wine
@@ -34,7 +34,7 @@ enum WineLoader {
             } else {
                 let wine = try await wine
                 let executable = URL(filePath: "/Applications/Wine Stable.app/Contents/Resources/wine/bin/wineServer", directoryHint: .isDirectory, relativeTo: nil)
-                let wineServer = WineServer(executable: executable, bottle: wine.bottle)
+                let wineServer = WineServer(executable: executable, prefix: wine.prefix)
                 self._wineServer = wineServer
                 return wineServer
             }
@@ -43,6 +43,6 @@ enum WineLoader {
     
     static func delete() throws {
         guard let wine = _wine else { return }
-        try FileManager.default.removeItem(at: wine.bottle.url)
+        try FileManager.default.removeItem(at: wine.prefix.url)
     }
 }

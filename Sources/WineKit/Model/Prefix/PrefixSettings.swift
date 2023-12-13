@@ -1,5 +1,5 @@
 //
-//  BottleSettings.swift
+//  PrefixSettings.swift
 //  WineKit
 //
 //  Created by David Walter on 05.11.23.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct BottleSettings: Hashable, Equatable, Codable {
+public struct PrefixSettings: Hashable, Equatable, Codable {
     // MARK: - Synchronization Mode
     
     public var synchronizationMode: SynchronizationMode
