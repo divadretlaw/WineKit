@@ -25,6 +25,7 @@ extension URL {
     }
     
     static var defaultWinePrefix: URL {
+        
         URL(filePath: "/Users/\(NSUserName())/.wine", directoryHint: .isDirectory)
         
     }

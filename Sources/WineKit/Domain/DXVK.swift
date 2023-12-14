@@ -8,11 +8,15 @@
 import Foundation
 
 public enum DXVK: Hashable, Equatable, Codable {
+    /// DXVK is disabled
     case disabled
+    /// DXVK is enabled
     case enabled
+    /// DXVK is enabled and DXVK async is enabled too
     case async
     
-    var environment: [String: String] {
+    /// Environment values for ``DXVK``
+    public var environment: [String: String] {
         switch self {
         case .disabled:
             return [:]
@@ -86,7 +90,8 @@ extension DXVK {
 }
 
 extension [DXVK.HUD] {
-    var environment: String? {
+    /// Environment value for `DXVK_HUD`
+    public var environment: String? {
         guard !isEmpty else {
             return nil
         }

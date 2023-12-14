@@ -25,7 +25,7 @@ extension FileManager {
     func files(at url: URL, options mask: FileManager.DirectoryEnumerationOptions = []) -> [URL] {
         guard let enumerator = enumerator(
             at: url,
-            includingPropertiesForKeys: [],
+            includingPropertiesForKeys: [.isRegularFileKey],
             options: mask
         ) else {
             return []

@@ -19,6 +19,7 @@ import OSLog
 public struct Bottle: Identifiable, Hashable, Equatable, Comparable {
     internal var identifier: BottleIdentifier
     
+    /// The wine environment the bottle uses
     public var environment: WineEnvironment
     /// The name of the bottle
     public var name: String
@@ -75,7 +76,8 @@ public struct Bottle: Identifiable, Hashable, Equatable, Comparable {
         self.prefix = Prefix(url: url)
     }
     
-    var url: URL {
+    /// URL to the location of the bottle
+    public var url: URL {
         prefix.url
     }
     
@@ -92,11 +94,13 @@ public struct Bottle: Identifiable, Hashable, Equatable, Comparable {
     /// Run the url in the bottle
     ///
     /// - Parameter url: URL to an executable.
-    /// - Returns: The output of the executable
     public func run(url: URL) async throws {
         return try await wine.run(["start", "/unix", url.path(percentEncoded: false)])
     }
     
+    /// Run the given ``Program`` in the bottle
+    ///
+    /// - Parameter program: The program to run.
     public func run(program: Program) async throws {
         return try await wine.run([program.url.path(percentEncoded: false)], environment: program.settings.environment)
     }
@@ -268,11 +272,6 @@ public struct Bottle: Identifiable, Hashable, Equatable, Comparable {
                     .replacingOccurrences(of: "C:", with: "drive_c")
                 return Program(url: url.appending(path: unixPath), bottle: self)
             }
-    }
-    
-    /// Checks if the bottle directory exists
-    public var isAvailable: Bool {
-        FileManager.default.fileExists(atPath: url.path(percentEncoded: false))
     }
     
     // MARK: - Identifiable
