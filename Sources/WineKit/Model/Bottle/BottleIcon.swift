@@ -44,7 +44,7 @@ public enum BottleIcon: Hashable, Equatable, Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let value = try container.decode(String.self)
-        let splits = value.split(separator: ";", maxSplits: 1)
+        let splits = value.split(separator: ";", maxSplits: 1, omittingEmptySubsequences: false)
         guard let dataType = splits.first, let data = splits.last else {
             throw DecodingError.dataCorrupted(.init(codingPath: [], debugDescription: "Data couldn't be read because it was not in the right format."))
         }
@@ -61,7 +61,7 @@ public enum BottleIcon: Hashable, Equatable, Codable {
             guard let data = Data(base64Encoded: String(data.dropFirst(7))) else {
                 throw DecodingError.dataCorrupted(.init(codingPath: [], debugDescription: "Data was not Base64 Encoded"))
             }
-            self = .png(data)
+            self = .jpeg(data)
         case "data:text/uri-list":
             if data.isEmpty {
                 self = .url(nil)
