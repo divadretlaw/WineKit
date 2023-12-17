@@ -32,7 +32,31 @@ public struct Winetricks: Hashable, Equatable {
         self.prefix = Prefix(url: url)
     }
     
-    public func run(verb: String) throws {
+    public func run(verb: Winetricks.App) throws {
+        try run(verb: verb.rawValue)
+    }
+    
+    public func run(verb: Winetricks.Benchmark) throws {
+        try run(verb: verb.rawValue)
+    }
+    
+    public func run(verb: Winetricks.DLL) throws {
+        try run(verb: verb.rawValue)
+    }
+    
+    public func run(verb: Winetricks.Font) throws {
+        try run(verb: verb.rawValue)
+    }
+    
+    public func run(verb: Winetricks.Game) throws {
+        try run(verb: verb.rawValue)
+    }
+    
+    public func run(verb: Winetricks.Setting) throws {
+        try run(verb: verb.rawValue)
+    }
+    
+    internal func run(verb: String) throws {
         let process = Process()
         
         process.executableURL = executable
