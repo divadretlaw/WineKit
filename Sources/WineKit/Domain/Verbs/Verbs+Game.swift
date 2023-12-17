@@ -8,7 +8,7 @@
 import Foundation
 
 extension Winetricks {
-    public enum Game: String, Hashable, Equatable, Codable, CustomStringConvertible {
+    public enum Game: String, Hashable, Equatable, Codable, CaseIterable, CustomStringConvertible, Sendable {
 		case acreedbro = "acreedbro"
 		case algodooDemo = "algodoo_demo"
 		case amnesiaTddDemo = "amnesia_tdd_demo"

@@ -8,7 +8,7 @@
 import Foundation
 
 extension Winetricks {
-    public enum Font: String, Hashable, Equatable, Codable, CustomStringConvertible {
+    public enum Font: String, Hashable, Equatable, Codable, CaseIterable, CustomStringConvertible, Sendable {
 		case allfonts = "allfonts"
 		case andale = "andale"
 		case arial = "arial"

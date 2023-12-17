@@ -8,7 +8,7 @@
 import Foundation
 
 extension Winetricks {
-    public enum Benchmark: String, Hashable, Equatable, Codable, CustomStringConvertible {
+    public enum Benchmark: String, Hashable, Equatable, Codable, CaseIterable, CustomStringConvertible, Sendable {
 		case _3dmark03 = "3dmark03"
 		case _3dmark05 = "3dmark05"
 		case _3dmark06 = "3dmark06"

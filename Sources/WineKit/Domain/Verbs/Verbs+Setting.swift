@@ -8,7 +8,7 @@
 import Foundation
 
 extension Winetricks {
-    public enum Setting: String, Hashable, Equatable, Codable, CustomStringConvertible {
+    public enum Setting: String, Hashable, Equatable, Codable, CaseIterable, CustomStringConvertible, Sendable {
 		case alldllsBuiltin = "alldlls=builtin"
 		case alldllsDefault = "alldlls=default"
 		case autostartWinedbgDisabled = "autostart_winedbg=disabled"

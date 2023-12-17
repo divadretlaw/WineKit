@@ -8,7 +8,7 @@
 import Foundation
 
 extension Winetricks {
-    public enum App: String, Hashable, Equatable, Codable, CustomStringConvertible {
+    public enum App: String, Hashable, Equatable, Codable, CaseIterable, CustomStringConvertible, Sendable {
 		case _3mLibrary = "3m_library"
 		case _7zip = "7zip"
 		case adobeDiged = "adobe_diged"

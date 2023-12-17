@@ -8,7 +8,7 @@
 import Foundation
 
 extension Winetricks {
-    public enum DLL: String, Hashable, Equatable, Codable, CustomStringConvertible {
+    public enum DLL: String, Hashable, Equatable, Codable, CaseIterable, CustomStringConvertible, Sendable {
 		case allcodecs = "allcodecs"
 		case amstream = "amstream"
 		case art2k7min = "art2k7min"

@@ -67,7 +67,7 @@ struct WinetricksPlugin: CommandPlugin {
             import Foundation
             
             extension Winetricks {
-                public enum \(verb.0): String, Hashable, Equatable, Codable, CustomStringConvertible {
+                public enum \(verb.0): String, Hashable, Equatable, Codable, CaseIterable, CustomStringConvertible, Sendable {
             \(cases.trimmingCharacters(in: .newlines))
             
                     // MARK: - CustomStringConvertible
