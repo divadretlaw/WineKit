@@ -97,6 +97,8 @@ public final class WineRegistry {
         }
     }
     
+    // MARK: - Convenience
+    
     /// Change the ``WindowsVersion`` used by this wine instance
     ///
     /// - Parameter windowsVersion: The ``WindowsVersion`` to use.

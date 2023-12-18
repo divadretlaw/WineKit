@@ -50,6 +50,31 @@ public final class WineProcess: Identifiable, Hashable, Equatable, CustomStringC
         self.process = process
     }
     
+    init(winetricks: Winetricks, verb: String) {
+        let process = Process()
+        process.executableURL = winetricks.executable
+        process.arguments = [verb]
+        process.currentDirectoryURL = winetricks.prefix.url
+        process.qualityOfService = .userInitiated
+        
+        process.environment = [:]
+            .merging(winetricks.prefix.environment) { _, new in
+                new
+            }
+        
+        self.portableExecutable = nil
+        
+        let standardOutput = Pipe()
+        self.standardOutput = standardOutput
+        process.standardOutput = standardOutput
+        
+        let standardError = Pipe()
+        self.standardError = standardError
+        process.standardError = standardError
+        
+        self.process = process
+    }
+    
     /// The name of the process
     public var name: String {
         portableExecutable?.name ?? process.arguments?.first ?? process.processIdentifier.description
