@@ -10,7 +10,7 @@ import WindowsFileKit
 import OSLog
 
 /// A `Process` started by WineKit
-public final class WineProcess: Identifiable, Hashable, Equatable, CustomStringConvertible {
+public final class WineProcess: Identifiable, Hashable, Equatable, CustomStringConvertible, Sendable {
     public let portableExecutable: PortableExecutable?
     public let standardOutput: Pipe
     public let standardError: Pipe

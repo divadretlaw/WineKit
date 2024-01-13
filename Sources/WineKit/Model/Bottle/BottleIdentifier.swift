@@ -8,7 +8,7 @@
 import Foundation
 
 /// The ID of a ``Bottle``
-public enum BottleIdentifier: Hashable, Equatable, Codable {
+public enum BottleIdentifier: Hashable, Equatable, Codable, Sendable {
     case `default`
     case uuid(UUID)
     

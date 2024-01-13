@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct PrefixSettings: Hashable, Equatable, Codable {
+public struct PrefixSettings: Hashable, Equatable, Codable, Sendable {
     // MARK: - Synchronization Mode
     
     public var synchronizationMode: SynchronizationMode

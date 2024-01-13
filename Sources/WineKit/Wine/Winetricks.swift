@@ -8,7 +8,7 @@
 import Foundation
 import OSLog
 
-public struct Winetricks: Hashable, Equatable {
+public struct Winetricks: Hashable, Equatable, Sendable {
     let executable: URL
     let prefix: Prefix
     

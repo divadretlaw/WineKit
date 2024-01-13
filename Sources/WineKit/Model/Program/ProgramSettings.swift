@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ProgramSettings: Hashable, Equatable, Codable {
+public struct ProgramSettings: Hashable, Equatable, Codable, Sendable {
     public var arguments: String
     public var environment: [String: String]
     

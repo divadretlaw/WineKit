@@ -8,7 +8,7 @@
 import Foundation
 
 /// A collection of helper commands
-public final class WineCommands {
+public final class WineCommands: Sendable {
     private let wine: Wine
     
     init(wine: Wine) {

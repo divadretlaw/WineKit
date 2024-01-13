@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum DXVK: Hashable, Equatable, Codable {
+public enum DXVK: Hashable, Equatable, Codable, Sendable {
     /// DXVK is disabled
     case disabled
     /// DXVK is enabled
@@ -29,7 +29,7 @@ public enum DXVK: Hashable, Equatable, Codable {
 }
 
 extension DXVK {
-    public enum HUD: Hashable, Equatable, Codable {
+    public enum HUD: Hashable, Equatable, Codable, Sendable {
         case devinfo
         case fps
         case frametimes

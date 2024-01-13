@@ -9,7 +9,7 @@ import Foundation
 import OSLog
 
 /// The output of a ``WineProcess``
-public enum WineOutput: Hashable {
+public enum WineOutput: Hashable, Equatable, Sendable {
     /// The process has launched
     case launched
     /// The process wrote to `stdout`

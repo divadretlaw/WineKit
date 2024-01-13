@@ -9,7 +9,7 @@ import Foundation
 import OSLog
 
 /// A reference of a ``Bottle`` to store on disk
-struct BottleReference: Hashable, Equatable, Codable {
+struct BottleReference: Hashable, Equatable, Codable, Sendable {
     /// The unique id of the bottle
     let identifier: BottleIdentifier
     /// The name of the bottle

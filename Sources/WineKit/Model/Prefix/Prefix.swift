@@ -16,7 +16,7 @@ import SwiftUI
 import OSLog
 
 /// A prefix represents a wine directory
-public struct Prefix: Identifiable, Hashable, Equatable, Codable {
+public struct Prefix: Identifiable, Hashable, Equatable, Codable, Sendable {
     public static var `default`: Prefix {
         Prefix(url: .defaultWinePrefix)
     }

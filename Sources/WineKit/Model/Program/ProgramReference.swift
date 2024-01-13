@@ -9,7 +9,7 @@ import Foundation
 import OSLog
 
 /// A reference of a ``Program`` to store on disk
-struct ProgramReference: Hashable, Equatable, Codable {
+struct ProgramReference: Hashable, Equatable, Codable, Sendable {
     /// The name of the program
     let name: String
     /// Custom settings of the program

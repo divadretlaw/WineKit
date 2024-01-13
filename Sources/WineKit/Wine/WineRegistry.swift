@@ -9,7 +9,7 @@ import Foundation
 import OSLog
 
 /// A collection of helpers to configure Wine
-public final class WineRegistry {
+public final class WineRegistry: Sendable {
     private let wine: Wine
     
     init(wine: Wine) {

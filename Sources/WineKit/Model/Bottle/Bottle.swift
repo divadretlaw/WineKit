@@ -16,7 +16,7 @@ import SwiftUI
 import OSLog
 
 /// A bottle represents a wine directory
-public struct Bottle: Identifiable, Hashable, Equatable, Comparable {
+public struct Bottle: Identifiable, Hashable, Equatable, Comparable, Sendable {
     internal var identifier: BottleIdentifier
     
     /// The wine environment the bottle uses

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum WinePackageVersion: String, Identifiable, Hashable, Equatable, Codable {
+public enum WinePackageVersion: String, Identifiable, Hashable, Equatable, Codable, Sendable {
     case stable = "stable"
     case development = "devel"
     case staging = "staging"

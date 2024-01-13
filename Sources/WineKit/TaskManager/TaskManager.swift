@@ -8,7 +8,7 @@
 import Foundation
 import WindowsFileKit
 
-public final class TaskManager: ObservableObject {
+public final class TaskManager: ObservableObject, @unchecked Sendable {
     public static let shared = TaskManager()
     
     @Published public private(set) var userTasks: Set<WineProcess>

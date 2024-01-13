@@ -8,7 +8,7 @@
 import Foundation
 
 /// Windows Version
-public enum WindowsVersion: String, CaseIterable, Codable, Identifiable, CustomStringConvertible {
+public enum WindowsVersion: String, CaseIterable, Codable, Identifiable, CustomStringConvertible, Sendable {
     /// Windows XP
     case windowsXP
     /// Windows 2003

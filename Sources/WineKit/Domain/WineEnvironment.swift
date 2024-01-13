@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum WineEnvironment: Identifiable, Hashable, Equatable, Codable {
+public enum WineEnvironment: Identifiable, Hashable, Equatable, Codable, Sendable {
     case wine(WinePackageVersion)
     case gptk
     case custom(String)

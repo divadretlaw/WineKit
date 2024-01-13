@@ -8,7 +8,7 @@
 import Foundation
 
 /// A icon of a ``Bottle``
-public enum BottleIcon: Hashable, Equatable, Codable {
+public enum BottleIcon: Hashable, Equatable, Codable, Sendable {
     /// A SF symbol as image
     case systemName(String)
     /// A PNG encoded image

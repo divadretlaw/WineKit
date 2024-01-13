@@ -8,7 +8,7 @@
 import Foundation
 
 /// List of Registry Types
-public enum RegistryType: String {
+public enum RegistryType: Hashable, Equatable, Codable, CaseIterable, Sendable {
     /// No Type
     case none
     /// String Type (ASCII)
