@@ -10,10 +10,12 @@ import XCTest
 
 final class WineKitTests: XCTestCase {
     override class func tearDown() {
-        do {
-            try WineLoader.delete()
-        } catch {
-            print("Deleting Wine test instance failed. \(error.localizedDescription)")
+        Task {
+            do {
+                try await WineLoader.delete()
+            } catch {
+                print("Deleting Wine test instance failed. \(error.localizedDescription)")
+            }
         }
     }
     

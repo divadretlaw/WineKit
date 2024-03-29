@@ -8,6 +8,7 @@
 import Foundation
 import OSLog
 
+/// Run Winetricks verbs
 public struct Winetricks: Hashable, Equatable, Sendable {
     let executable: URL
     let prefix: Prefix

@@ -36,10 +36,12 @@ let package = Package(
             name: "WinetricksPlugin",
             capability: .command(
                 intent: .custom(verb: "winetricks-generate", description: "Generate enums from latest Winetricks verbs"),
-                permissions: [.allowNetworkConnections(
-                    scope: .all(),
-                    reason: "Download latest verbs"
-                )]
+                permissions: [
+                    .allowNetworkConnections(
+                        scope: .all(),
+                        reason: "Download latest verbs"
+                    )
+                ]
             )
         )
     ]

@@ -8,6 +8,7 @@
 import Foundation
 import OSLog
 
+/// Run WineServer commands
 public struct WineServer: Hashable, Equatable, Sendable {
     let executable: URL
     let prefix: Prefix

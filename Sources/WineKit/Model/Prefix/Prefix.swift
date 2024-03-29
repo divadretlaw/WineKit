@@ -17,6 +17,7 @@ import OSLog
 
 /// A prefix represents a wine directory
 public struct Prefix: Identifiable, Hashable, Equatable, Codable, Sendable {
+    /// The default Wine prefix
     public static var `default`: Prefix {
         Prefix(url: .defaultWinePrefix)
     }
