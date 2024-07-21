@@ -110,7 +110,7 @@ extension Winetricks {
 			case .meiryo:
 				return "MS Meiryo font (Microsoft, 2009)"
 			case .opensymbol:
-				return "OpenSymbol fonts (replacement for Wingdings) (OpenOffice.org, 2017)"
+				return "OpenSymbol fonts (replacement for Wingdings) (libreoffice.org, 2022)"
 			case .pptfonts:
 				return "All MS PowerPoint Viewer fonts (various, )"
 			case .sourcehansans:

@@ -24,6 +24,7 @@ extension Winetricks {
 		case comctl32ocx = "comctl32ocx"
 		case comdlg32ocx = "comdlg32ocx"
 		case crypt32 = "crypt32"
+		case crypt32Winxp = "crypt32_winxp"
 		case d3dcompiler42 = "d3dcompiler_42"
 		case d3dcompiler43 = "d3dcompiler_43"
 		case d3dcompiler46 = "d3dcompiler_46"
@@ -93,11 +94,13 @@ extension Winetricks {
 		case dotnet472 = "dotnet472"
 		case dotnet48 = "dotnet48"
 		case dotnet6 = "dotnet6"
+		case dotnet7 = "dotnet7"
 		case dotnetVerifier = "dotnet_verifier"
 		case dotnetcore2 = "dotnetcore2"
 		case dotnetcore3 = "dotnetcore3"
 		case dotnetcoredesktop3 = "dotnetcoredesktop3"
 		case dotnetdesktop6 = "dotnetdesktop6"
+		case dotnetdesktop7 = "dotnetdesktop7"
 		case dpvoice = "dpvoice"
 		case dsdmo = "dsdmo"
 		case dsound = "dsound"
@@ -173,6 +176,9 @@ extension Winetricks {
 		case dxvk1103 = "dxvk1103"
 		case dxvk2000 = "dxvk2000"
 		case dxvk2010 = "dxvk2010"
+		case dxvk2020 = "dxvk2020"
+		case dxvk2030 = "dxvk2030"
+		case dxvkNvapi0061 = "dxvk_nvapi0061"
 		case esent = "esent"
 		case faudio = "faudio"
 		case faudio1901 = "faudio1901"
@@ -192,6 +198,7 @@ extension Winetricks {
 		case galliumnine06 = "galliumnine06"
 		case galliumnine07 = "galliumnine07"
 		case galliumnine08 = "galliumnine08"
+		case galliumnine09 = "galliumnine09"
 		case gdiplus = "gdiplus"
 		case gdiplusWinxp = "gdiplus_winxp"
 		case gfw = "gfw"
@@ -276,6 +283,7 @@ extension Winetricks {
 		case speechsdk = "speechsdk"
 		case tabctl32 = "tabctl32"
 		case ucrtbase2019 = "ucrtbase2019"
+		case uiribbon = "uiribbon"
 		case updspapi = "updspapi"
 		case urlmon = "urlmon"
 		case usp10 = "usp10"
@@ -350,6 +358,8 @@ extension Winetricks {
 			case .comdlg32ocx:
 				return "Common Dialog ActiveX Control for VB6 (Microsoft, 2012)"
 			case .crypt32:
+				return "MS crypt32 (Microsoft, 2011)"
+			case .crypt32Winxp:
 				return "MS crypt32 (Microsoft, 2004)"
 			case .d3dcompiler42:
 				return "MS d3dcompiler_42.dll (Microsoft, 2010)"
@@ -489,6 +499,8 @@ extension Winetricks {
 				return "MS .NET 4.8 (Microsoft, 2019)"
 			case .dotnet6:
 				return "MS .NET Runtime 6.0 LTS (Microsoft, 2023)"
+			case .dotnet7:
+				return "MS .NET Runtime 7.0 LTS (Microsoft, 2023)"
 			case .dotnetVerifier:
 				return "MS .NET Verifier (Microsoft, 2016)"
 			case .dotnetcore2:
@@ -499,6 +511,8 @@ extension Winetricks {
 				return "MS .NET Core Desktop Runtime 3.1 LTS (Microsoft, 2020)"
 			case .dotnetdesktop6:
 				return "MS .NET Desktop Runtime 6.0 LTS (Microsoft, 2023)"
+			case .dotnetdesktop7:
+				return "MS .NET Desktop Runtime 7.0 LTS (Microsoft, 2023)"
 			case .dpvoice:
 				return "Microsoft dpvoice dpvvox dpvacm Audio dlls (Microsoft, 2002)"
 			case .dsdmo:
@@ -649,10 +663,16 @@ extension Winetricks {
 				return "Vulkan-based D3D9/D3D10/D3D11 implementation for Linux / Wine (2.0) (Philip Rebohle, 2022)"
 			case .dxvk2010:
 				return "Vulkan-based D3D9/D3D10/D3D11 implementation for Linux / Wine (2.1) (Philip Rebohle, 2023)"
+			case .dxvk2020:
+				return "Vulkan-based D3D9/D3D10/D3D11 implementation for Linux / Wine (2.2) (Philip Rebohle, 2023)"
+			case .dxvk2030:
+				return "Vulkan-based D3D9/D3D10/D3D11 implementation for Linux / Wine (2.3) (Philip Rebohle, 2023)"
+			case .dxvkNvapi0061:
+				return "Alternative NVAPI Vulkan implementation on top of DXVK for Linux / Wine (0.6.1) (Jens Peters, 2023)"
 			case .esent:
 				return "MS Extensible Storage Engine (Microsoft, 2011)"
 			case .faudio:
-				return "FAudio (xaudio reimplementation, with xna support) builds for win32 (latest) (Kron4ek, 2019)"
+				return "FAudio (xaudio reimplementation, with xna support) builds for win32 (20.07) (Kron4ek, 2019)"
 			case .faudio1901:
 				return "FAudio (xaudio reimplementation, with xna support) builds for win32 (19.01) (Kron4ek, 2019)"
 			case .faudio1902:
@@ -672,7 +692,7 @@ extension Winetricks {
 			case .filever:
 				return "Microsoft's filever, for dumping file version info (Microsoft, 20??)"
 			case .galliumnine:
-				return "Gallium Nine Standalone (latest) (Gallium Nine Team, 2019)"
+				return "Gallium Nine Standalone (latest) (Gallium Nine Team, 2023)"
 			case .galliumnine02:
 				return "Gallium Nine Standalone (v0.2) (Gallium Nine Team, 2019)"
 			case .galliumnine03:
@@ -687,6 +707,8 @@ extension Winetricks {
 				return "Gallium Nine Standalone (v0.7) (Gallium Nine Team, 2020)"
 			case .galliumnine08:
 				return "Gallium Nine Standalone (v0.8) (Gallium Nine Team, 2021)"
+			case .galliumnine09:
+				return "Gallium Nine Standalone (v0.9) (Gallium Nine Team, 2023)"
 			case .gdiplus:
 				return "MS GDI+ (Microsoft, 2011)"
 			case .gdiplusWinxp:
@@ -855,6 +877,8 @@ extension Winetricks {
 				return "Microsoft Tabbed Dialog Control 6.0 (tabctl32.ocx) (Microsoft, 2012)"
 			case .ucrtbase2019:
 				return "Visual C++ 2019 library (ucrtbase.dll) (Microsoft, 2019)"
+			case .uiribbon:
+				return "Windows UIRibbon (Microsoft, 2011)"
 			case .updspapi:
 				return "Windows Update Service API (Microsoft, 2004)"
 			case .urlmon:
@@ -934,7 +958,7 @@ extension Winetricks {
 			case .xna40:
 				return "MS XNA Framework Redistributable 4.0 (Microsoft, 2010)"
 			case .xvid:
-				return "Xvid Video Codec (xvid.org, 2009)"
+				return "Xvid Video Codec (xvid.org, 2019)"
             }
         }
     }

@@ -19,6 +19,8 @@ extension Winetricks {
 		case colorprofile = "colorprofile"
 		case controlpad = "controlpad"
 		case controlspy = "controlspy"
+		case dbgview = "dbgview"
+		case depends = "depends"
 		case dotnet20sdk = "dotnet20sdk"
 		case dxsdkAug2006 = "dxsdk_aug2006"
 		case dxsdkJun2010 = "dxsdk_jun2010"
@@ -50,7 +52,7 @@ extension Winetricks {
 		case ollydbg201 = "ollydbg201"
 		case openwatcom = "openwatcom"
 		case origin = "origin"
-		case originupdater = "originupdater"
+		case procexp = "procexp"
 		case protectionid = "protectionid"
 		case psdk2003 = "psdk2003"
 		case psdkwin71 = "psdkwin71"
@@ -97,6 +99,10 @@ extension Winetricks {
 				return "MS ActiveX Control Pad (Microsoft, 1997)"
 			case .controlspy:
 				return "Control Spy 6  (Microsoft, 2005)"
+			case .dbgview:
+				return "Debug monitor (Mark Russinovich, 2019)"
+			case .depends:
+				return "Dependency Walker (Steve P. Miller, 2006)"
 			case .dotnet20sdk:
 				return "MS .NET 2.0 SDK (Microsoft, 2006)"
 			case .dxsdkAug2006:
@@ -159,8 +165,8 @@ extension Winetricks {
 				return "Open Watcom C/C++ compiler (can compile win16 code!) (Watcom, 2010)"
 			case .origin:
 				return "EA Origin (EA, 2011)"
-			case .originupdater:
-				return "EA Origin (updater) (EA, )"
+			case .procexp:
+				return "Process Explorer (Microsoft, 2023)"
 			case .protectionid:
 				return "Protection ID (CDKiLLER & TippeX, 2016)"
 			case .psdk2003:
