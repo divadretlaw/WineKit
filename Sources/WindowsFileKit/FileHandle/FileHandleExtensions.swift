@@ -64,20 +64,10 @@ extension FileHandle {
                 }
             }
             
-//            var lastByte: UInt8 = 0
-//            repeat {
-//                if let byte = try readByte(), byte != 0 {
-//                    rawData.append(byte)
-//                    lastByte = byte
-//                } else {
-//                    lastByte = 0
-//                }
-//            } while lastByte != 0
             let data = Data(rawData)
             return String(data: data, encoding: encoding)
         } catch {
             return nil
         }
     }
-    
 }
