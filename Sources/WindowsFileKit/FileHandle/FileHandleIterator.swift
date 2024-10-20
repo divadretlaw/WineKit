@@ -23,7 +23,15 @@ public struct FileHandleIterator: IteratorProtocol {
     }
 }
 
+#if compiler(>=6.0)
+extension FileHandle: @retroactive Sequence {
+}
+#else
 extension FileHandle: Sequence {
+}
+#endif
+
+extension FileHandle {
     public func makeIterator() -> FileHandleIterator {
         FileHandleIterator(self)
     }

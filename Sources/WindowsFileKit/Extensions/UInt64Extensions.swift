@@ -8,11 +8,11 @@
 import Foundation
 
 extension UInt64 {
-    mutating func move<T>(by: T.Type) { // swiftlint:disable:this identifier_name
+    mutating func move<T>(by identifier: T.Type) {
         self += UInt64(MemoryLayout<T>.size)
     }
     
-    func moved<T>(by: T.Type) -> UInt64 { // swiftlint:disable:this identifier_name
+    func moved<T>(by identifier: T.Type) -> UInt64 {
         self + UInt64(MemoryLayout<T>.size)
     }
 }
