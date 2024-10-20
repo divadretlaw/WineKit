@@ -10,7 +10,7 @@ import XCTest
 
 final class ModelTests: XCTestCase {
     func testWineEnvironments() async throws {
-        let environments: [WineEnvironment] = [.wine(.stable), .wine(.development), .wine(.staging), .gptk]
+        let environments: [WineEnvironment] = [.wine(.stable), .wine(.development), .wine(.staging), .gptk, .whisky]
         for wine in environments {
             let encoded = try JSONEncoder().encode(wine)
             XCTAssertEqual(wine, try JSONDecoder().decode(WineEnvironment.self, from: encoded))

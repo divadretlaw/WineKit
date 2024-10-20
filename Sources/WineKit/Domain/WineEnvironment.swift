@@ -10,10 +10,11 @@ import Foundation
 public enum WineEnvironment: Identifiable, Hashable, Equatable, Codable, Sendable {
     case wine(WinePackageVersion)
     case gptk
+    case whisky
     case custom(String)
     
     public init(rawValue: String) {
-        let url = URL(filePath: rawValue, directoryHint: .isDirectory, relativeTo: nil)
+        let url = URL(filePath: rawValue.replacingOccurrences(of: "~", with: NSHomeDirectory()), directoryHint: .isDirectory, relativeTo: nil)
         switch url {
         case WineEnvironment.wine(.stable).url:
             self = .wine(.stable)
@@ -23,6 +24,8 @@ public enum WineEnvironment: Identifiable, Hashable, Equatable, Codable, Sendabl
             self = .wine(.staging)
         case WineEnvironment.gptk.url:
             self = .gptk
+        case WineEnvironment.whisky.url:
+            self = .whisky
         default:
             self = .custom(rawValue)
         }
@@ -41,6 +44,8 @@ public enum WineEnvironment: Identifiable, Hashable, Equatable, Codable, Sendabl
             }
         case .gptk:
             return "/usr/local/opt/game-porting-toolkit/bin"
+        case .whisky:
+            return "~/Library/Application Support/com.isaacmarovitz.Whisky/Libraries/Wine/bin"
         case let .custom(path):
             return path
         }
@@ -48,7 +53,7 @@ public enum WineEnvironment: Identifiable, Hashable, Equatable, Codable, Sendabl
     
     /// URL to the wine binaries
     public var url: URL {
-        URL(filePath: rawValue, directoryHint: .isDirectory, relativeTo: nil)
+        URL(filePath: rawValue.replacingOccurrences(of: "~", with: NSHomeDirectory()), directoryHint: .isDirectory, relativeTo: nil)
     }
     
     // MARK: - Identifiable
@@ -59,6 +64,8 @@ public enum WineEnvironment: Identifiable, Hashable, Equatable, Codable, Sendabl
             return "wine-\(version.rawValue)"
         case .gptk:
             return "gptk"
+        case .whisky:
+            return "whisky"
         case let .custom(path):
             return "custom-\(path)"
         }

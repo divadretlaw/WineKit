@@ -11,6 +11,7 @@ import Foundation
 final actor WineLoader: @unchecked Sendable {
     private var wine: Wine?
     private var wineServer: WineServer?
+    private static let environment = WineEnvironment.gptk
     
     static let shared = WineLoader()
     
@@ -27,7 +28,7 @@ final actor WineLoader: @unchecked Sendable {
             if let wine = await shared.wine {
                 return wine
             } else {
-                let executable = URL(filePath: "/Applications/Wine Stable.app/Contents/Resources/wine/bin/wine64", directoryHint: .isDirectory, relativeTo: nil)
+                let executable = URL(filePath: "\(environment.rawValue)/wine64", directoryHint: .isDirectory, relativeTo: nil)
                 let prefix = FileManager.default.temporaryDirectory.appending(path: UUID().uuidString)
                 try? FileManager.default.createDirectory(at: prefix, withIntermediateDirectories: true)
                 let wine = Wine(executable: executable, prefix: prefix)
@@ -44,7 +45,7 @@ final actor WineLoader: @unchecked Sendable {
                 return wineServer
             } else {
                 let wine = try await wine
-                let executable = URL(filePath: "/Applications/Wine Stable.app/Contents/Resources/wine/bin/wineServer", directoryHint: .isDirectory, relativeTo: nil)
+                let executable = URL(filePath: "\(environment.rawValue)/wineServer", directoryHint: .isDirectory, relativeTo: nil)
                 let wineServer = WineServer(executable: executable, prefix: wine.prefix)
                 await shared.set(wineServer: wineServer)
                 return wineServer
