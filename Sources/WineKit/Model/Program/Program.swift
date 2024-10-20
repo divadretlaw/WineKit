@@ -10,7 +10,7 @@ import WindowsFileKit
 import OSLog
 
 /// A program in a ``Bottle`` that can be executed
-public struct Program: Identifiable, Hashable, Equatable, Comparable {
+public struct Program: Identifiable, Hashable, Equatable, Comparable, Sendable {
     /// Name of the program
     public var name: String
     /// URL to the executable of the program
