@@ -17,15 +17,22 @@ public struct PrefixSettings: Hashable, Equatable, Codable, Sendable {
     public var dxvk: DXVK
     public var dxvkHud: [DXVK.HUD]
     
+    // MARK: - Rosetta 2
+    
+    public var advertiseAVX: Bool
+    
     // MARK: - Metal
     
     public var showMetalHud: Bool
+    
+    // MARK: -
     
     init() {
         self.synchronizationMode = .esync
         self.dxvk = .disabled
         self.dxvkHud = []
         self.showMetalHud = false
+        self.advertiseAVX = false
     }
     
     public var environment: [String: String] {
@@ -45,6 +52,12 @@ public struct PrefixSettings: Hashable, Equatable, Codable, Sendable {
         
         if showMetalHud {
             environment["MTL_HUD_ENABLED"] = "1"
+        }
+        
+        if #available(macOS 15, *) {
+            if advertiseAVX {
+                environment["ROSETTA_ADVERTISE_AVX"] = "1"
+            }
         }
         
         return environment
