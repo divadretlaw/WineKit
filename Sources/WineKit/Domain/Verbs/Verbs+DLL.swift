@@ -261,6 +261,8 @@ extension Winetricks {
 		case peverify = "peverify"
 		case physx = "physx"
 		case pngfilt = "pngfilt"
+		case powershell = "powershell"
+		case powershellCore = "powershell_core"
 		case prntvpt = "prntvpt"
 		case python26 = "python26"
 		case python27 = "python27"
@@ -833,6 +835,10 @@ extension Winetricks {
 				return "PhysX (Nvidia, 2021)"
 			case .pngfilt:
 				return "pngfilt.dll (from winxp) (Microsoft, 2004)"
+			case .powershell:
+				return "Windows PowerShell Wrapper for PowerShell Core (ProjectSynchro, 2024)"
+			case .powershellCore:
+				return "PowerShell Core (Microsoft, 2016)"
 			case .prntvpt:
 				return "prntvpt.dll (Microsoft, 2011)"
 			case .python26:
