@@ -288,6 +288,7 @@ public struct Bottle: Identifiable, Hashable, Equatable, Comparable, Sendable {
         hasher.combine(icon)
         hasher.combine(url)
         hasher.combine(prefix)
+        hasher.combine(environment)
     }
     
     // MARK: - Equatable
@@ -297,7 +298,8 @@ public struct Bottle: Identifiable, Hashable, Equatable, Comparable, Sendable {
               lhs.name == rhs.name,
               lhs.icon == rhs.icon,
               lhs.url == rhs.url,
-              lhs.prefix == rhs.prefix
+              lhs.prefix == rhs.prefix,
+              lhs.environment == rhs.environment
         else {
             return false
         }
