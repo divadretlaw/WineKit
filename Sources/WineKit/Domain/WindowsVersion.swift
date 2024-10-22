@@ -27,6 +27,8 @@ public enum WindowsVersion: String, CaseIterable, Codable, Identifiable, CustomS
     case windows81
     /// Windows 10
     case windows10
+    /// Windows 11
+    case windows11
     
     public init?(rawValue: String) {
         switch rawValue.lowercased() {
@@ -48,6 +50,8 @@ public enum WindowsVersion: String, CaseIterable, Codable, Identifiable, CustomS
             self = .windows81
         case "win10":
             self = .windows10
+        case "win11":
+            self = .windows11
         default:
             return nil
         }
@@ -73,6 +77,8 @@ public enum WindowsVersion: String, CaseIterable, Codable, Identifiable, CustomS
             return "win81"
         case .windows10:
             return "win10"
+        case .windows11:
+            return "win11"
         }
     }
     
