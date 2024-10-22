@@ -17,6 +17,10 @@ public struct PrefixSettings: Hashable, Equatable, Codable, Sendable {
     public var dxvk: DXVK
     public var dxvkHud: [DXVK.HUD]
     
+    // MARK: - DXMT
+    
+    public var dxmt: DXMT
+    
     // MARK: - Rosetta 2
     
     public var advertiseAVX: Bool
@@ -31,6 +35,7 @@ public struct PrefixSettings: Hashable, Equatable, Codable, Sendable {
         self.synchronizationMode = .esync
         self.dxvk = .disabled
         self.dxvkHud = []
+        self.dxmt = .disabled
         self.showMetalHud = false
         self.advertiseAVX = false
     }
@@ -49,6 +54,9 @@ public struct PrefixSettings: Hashable, Equatable, Codable, Sendable {
         }
         
         environment["DXVK_HUD"] = dxvkHud.environment
+        environment.merge(dxmt.environment) { _, new in
+            new
+        }
         
         if showMetalHud {
             environment["MTL_HUD_ENABLED"] = "1"
