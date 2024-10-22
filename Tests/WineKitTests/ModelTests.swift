@@ -19,15 +19,15 @@ final class ModelTests: XCTestCase {
     
     func testDXVKHUD() async throws {
         var hud: [DXVK.HUD] = []
-        XCTAssertNil(hud.environment)
+        XCTAssertNil(hud.environment["DXVK_HUD"])
         hud.append(.fps)
-        XCTAssertEqual(hud.environment, "fps")
+        XCTAssertEqual(hud.environment["DXVK_HUD"], "fps")
         hud.append(.memory)
-        XCTAssertEqual(hud.environment, "fps,memory")
+        XCTAssertEqual(hud.environment["DXVK_HUD"], "fps,memory")
         hud.append(.full)
-        XCTAssertEqual(hud.environment, "full")
+        XCTAssertEqual(hud.environment["DXVK_HUD"], "full")
         hud = [.full]
-        XCTAssertEqual(hud.environment, "full")
+        XCTAssertEqual(hud.environment["DXVK_HUD"], "full")
     }
     
     func testBottleIcons() async throws {

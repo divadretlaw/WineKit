@@ -17,6 +17,16 @@ public enum SynchronizationMode: String, CaseIterable, Codable, Identifiable, Ha
     /// See [Wine MSync](https://github.com/marzent/wine-msync)
     case msync = "WINEMSYNC"
     
+    /// Environment values for ``SynchronizationMode``
+    public var environment: [String: String] {
+        switch self {
+        case .disabled:
+            [:]
+        default:
+            [rawValue: "1"]
+        }
+    }
+    
     // MARK: - Identifiable
     
     public var id: String {

@@ -42,25 +42,36 @@ public struct PrefixSettings: Hashable, Equatable, Codable, Sendable {
     
     public var environment: [String: String] {
         var environment: [String: String] = [:]
-        switch synchronizationMode {
-        case .disabled:
-            break
-        default:
-            environment[synchronizationMode.rawValue] = "1"
+        
+        // Synchronization Mode
+        
+        environment.merge(synchronizationMode.environment) { _, new in
+            new
         }
+        
+        // DXVK
         
         environment.merge(dxvk.environment) { _, new in
             new
         }
         
-        environment["DXVK_HUD"] = dxvkHud.environment
+        environment.merge(dxvkHud.environment) { _, new in
+            new
+        }
+        
+        // DXMT
+        
         environment.merge(dxmt.environment) { _, new in
             new
         }
         
+        // Metal
+        
         if showMetalHud {
             environment["MTL_HUD_ENABLED"] = "1"
         }
+        
+        // Rosetta 2
         
         if #available(macOS 15, *) {
             if advertiseAVX {

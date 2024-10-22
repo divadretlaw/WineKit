@@ -91,15 +91,15 @@ extension DXVK {
 
 extension [DXVK.HUD] {
     /// Environment value for `DXVK_HUD`
-    public var environment: String? {
+    public var environment: [String: String] {
         guard !isEmpty else {
-            return nil
+            return [:]
         }
         
         if contains(.full) {
-            return "full"
+            return ["DXVK_HUD": "full"]
         } else {
-            return map { $0.rawValue }.joined(separator: ",")
+            return ["DXVK_HUD": map { $0.rawValue }.joined(separator: ",")]
         }
     }
 }
