@@ -8,7 +8,7 @@
 import Foundation
 
 /// WineServer synchronization mode
-public enum SynchronizationMode: String, CaseIterable, Codable, Identifiable, CustomStringConvertible, Sendable {
+public enum SynchronizationMode: String, CaseIterable, Codable, Identifiable, Hashable, Equatable, Sendable {
     case disabled
     /// eventfd-based synchronization
     case esync = "WINEESYNC"
@@ -22,9 +22,9 @@ public enum SynchronizationMode: String, CaseIterable, Codable, Identifiable, Cu
     public var id: String {
         rawValue
     }
-    
-    // MARK: - CustomStringConvertible
-    
+}
+
+extension SynchronizationMode: CustomStringConvertible {
     public var description: String {
         switch self {
         case .disabled:

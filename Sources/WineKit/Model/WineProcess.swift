@@ -10,7 +10,7 @@ import WindowsFileKit
 import OSLog
 
 /// A `Process` started by WineKit
-public final class WineProcess: Identifiable, Hashable, Equatable, CustomStringConvertible, Sendable {
+public final class WineProcess: Identifiable, Hashable, Equatable, Sendable {
     public let portableExecutable: PortableExecutable?
     public let standardOutput: Pipe
     public let standardError: Pipe
@@ -140,7 +140,7 @@ public final class WineProcess: Identifiable, Hashable, Equatable, CustomStringC
     }
     
     /// Blocks the process until the receiver is finished.
-    /// 
+    ///
     /// - Returns: The exit status the receiver’s executable returns.
     @discardableResult public func waitUntilExit() async -> Int32 {
         let task = Task.detached { [process] in
@@ -167,9 +167,9 @@ public final class WineProcess: Identifiable, Hashable, Equatable, CustomStringC
     public static func == (lhs: WineProcess, rhs: WineProcess) -> Bool {
         lhs.process == rhs.process
     }
-    
-    // MARK: - CustomStringConvertible
-    
+}
+
+extension WineProcess: CustomStringConvertible {
     public var description: String {
         "\(name) (\(id))"
     }

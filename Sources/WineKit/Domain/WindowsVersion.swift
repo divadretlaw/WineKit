@@ -8,7 +8,7 @@
 import Foundation
 
 /// Windows Version
-public enum WindowsVersion: String, CaseIterable, Codable, Identifiable, CustomStringConvertible, Sendable {
+public enum WindowsVersion: String, CaseIterable, Identifiable, Hashable, Equatable, Codable, Sendable {
     /// Windows XP
     case windowsXP
     /// Windows 2003
@@ -87,9 +87,9 @@ public enum WindowsVersion: String, CaseIterable, Codable, Identifiable, CustomS
     public var id: String {
         rawValue
     }
-    
-    // MARK: - CustomStringConvertible
-    
+}
+
+extension WindowsVersion {
     public var description: String {
         switch self {
         case .windowsXP:
@@ -110,6 +110,8 @@ public enum WindowsVersion: String, CaseIterable, Codable, Identifiable, CustomS
             return "Windows 8.1"
         case .windows10:
             return "Windows 10"
+        case .windows11:
+            return "Windows 11"
         }
     }
 }
