@@ -34,4 +34,14 @@ public final class WineCommands: Sendable {
     public func taskManager() async throws {
         try await wine.runSystem(["taskmgr"])
     }
+    
+    /// Simulate a Windows boot
+    public func boot() async throws {
+        try await wine.runSystem(["wineboot"])
+    }
+    
+    /// Simulate a Windows boot
+    public func boot(arguments: [String]) async throws {
+        try await wine.runSystem(["wineboot"] + arguments)
+    }
 }
