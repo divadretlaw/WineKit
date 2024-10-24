@@ -7,19 +7,40 @@
 
 import Foundation
 
-public enum DXMT: Hashable, Equatable, Codable, Sendable {
-    /// DXMT is disabled
-    case disabled
-    /// DXMT is enabled
-    case enabled
+public struct DXMT: Hashable, Equatable, Codable, Sendable {
+    public var mode: Mode
     
-    /// Environment values for ``DXMT``
+    public init() {
+        self.mode = .disabled
+    }
+    
+    /// Environment values for ``DXVK``
     public var environment: [String: String] {
-        switch self {
-        case .disabled:
-            return [:]
-        case .enabled:
-            return ["WINEDLLOVERRIDES": "dxgi,d3d11,d3d10core=n,b"]
+        var environment: [String: String] = [:]
+        
+        environment.merge(mode.environment) { _, new in
+            new
+        }
+        
+        return environment
+    }
+}
+
+extension DXMT {
+    public enum Mode: Hashable, Equatable, Codable, Sendable {
+        /// DXMT is disabled
+        case disabled
+        /// DXMT is enabled
+        case enabled
+        
+        /// Environment values for ``DXMT``
+        public var environment: [String: String] {
+            switch self {
+            case .disabled:
+                return [:]
+            case .enabled:
+                return ["WINEDLLOVERRIDES": "dxgi,d3d11,d3d10core=n,b"]
+            }
         }
     }
 }

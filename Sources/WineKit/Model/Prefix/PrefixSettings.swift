@@ -15,29 +15,22 @@ public struct PrefixSettings: Hashable, Equatable, Codable, Sendable {
     // MARK: - DXVK
     
     public var dxvk: DXVK
-    public var dxvkHud: [DXVK.HUD]
     
     // MARK: - DXMT
     
     public var dxmt: DXMT
     
-    // MARK: - Rosetta 2
+    // MARK: - GPTK
     
-    public var advertiseAVX: Bool
-    
-    // MARK: - Metal
-    
-    public var showMetalHud: Bool
+    public var gptk: GPTK
     
     // MARK: -
     
     init() {
         self.synchronizationMode = .esync
-        self.dxvk = .disabled
-        self.dxvkHud = []
-        self.dxmt = .disabled
-        self.showMetalHud = false
-        self.advertiseAVX = false
+        self.dxvk = DXVK()
+        self.dxmt = DXMT()
+        self.gptk = GPTK()
     }
     
     public var environment: [String: String] {
@@ -55,28 +48,16 @@ public struct PrefixSettings: Hashable, Equatable, Codable, Sendable {
             new
         }
         
-        environment.merge(dxvkHud.environment) { _, new in
-            new
-        }
-        
         // DXMT
         
         environment.merge(dxmt.environment) { _, new in
             new
         }
         
-        // Metal
+        // GPTK
         
-        if showMetalHud {
-            environment["MTL_HUD_ENABLED"] = "1"
-        }
-        
-        // Rosetta 2
-        
-        if #available(macOS 15, *) {
-            if advertiseAVX {
-                environment["ROSETTA_ADVERTISE_AVX"] = "1"
-            }
+        environment.merge(gptk.environment) { _, new in
+            new
         }
         
         return environment

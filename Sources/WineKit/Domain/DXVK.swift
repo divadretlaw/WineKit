@@ -7,28 +7,53 @@
 
 import Foundation
 
-public enum DXVK: Hashable, Equatable, Codable, Sendable {
-    /// DXVK is disabled
-    case disabled
-    /// DXVK is enabled
-    case enabled
-    /// DXVK is enabled and DXVK async is enabled too
-    case async
+public struct DXVK: Hashable, Equatable, Codable, Sendable {
+    public var mode: Mode
+    public var hud: [HUD]
+    
+    public init() {
+        self.mode = .disabled
+        self.hud = []
+    }
     
     /// Environment values for ``DXVK``
     public var environment: [String: String] {
-        switch self {
-        case .disabled:
-            return [:]
-        case .enabled:
-            return ["WINEDLLOVERRIDES": "d3d11,d3d10core,dxgi,d3d9=n,b"]
-        case .async:
-            return ["WINEDLLOVERRIDES": "d3d11,d3d10core,dxgi,d3d9=n,b", "DXVK_ASYNC": "1"]
+        var environment: [String: String] = [:]
+        
+        environment.merge(mode.environment) { _, new in
+            new
         }
+        
+        environment.merge(hud.environment) { _, new in
+            new
+        }
+        
+        return environment
     }
 }
 
 extension DXVK {
+    public enum Mode: Hashable, Equatable, Codable, Sendable {
+        /// DXVK is disabled
+        case disabled
+        /// DXVK is enabled
+        case enabled
+        /// DXVK is enabled and DXVK async is enabled too
+        case async
+        
+        /// Environment values for ``DXVK``
+        public var environment: [String: String] {
+            switch self {
+            case .disabled:
+                return [:]
+            case .enabled:
+                return ["WINEDLLOVERRIDES": "d3d11,d3d10core,dxgi,d3d9=n,b"]
+            case .async:
+                return ["WINEDLLOVERRIDES": "d3d11,d3d10core,dxgi,d3d9=n,b", "DXVK_ASYNC": "1"]
+            }
+        }
+    }
+    
     public enum HUD: Hashable, Equatable, Codable, Sendable {
         case devinfo
         case fps
