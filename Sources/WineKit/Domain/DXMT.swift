@@ -27,7 +27,7 @@ public struct DXMT: Hashable, Equatable, Codable, Sendable {
 }
 
 extension DXMT {
-    public enum Mode: Hashable, Equatable, Codable, Sendable {
+    public enum Mode: CaseIterable, Hashable, Equatable, Codable, Sendable {
         /// DXMT is disabled
         case disabled
         /// DXMT is enabled

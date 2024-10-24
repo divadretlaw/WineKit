@@ -24,7 +24,7 @@ extension PortableExecutable {
         case menu = 4
         /// Dialog box
         case dialog = 5
-        /// String-table entr
+        /// String-table entry
         case string = 6
         /// Font directory resource
         case fontDirectory = 7
@@ -45,7 +45,7 @@ extension PortableExecutable {
         /// Allows a resource editing tool to associate a string with an .rc file.
         ///
         /// Typically, the string is the name of the header file that provides symbolic names.
-        /// The resource compiler parses the string but otherwise ignores the value. For example,
+        /// The resource compiler parses the string but otherwise ignores the value.
         case dlgInclude = 17
         /// Plug and Play resource
         case plugAndPlay = 19

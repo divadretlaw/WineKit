@@ -33,7 +33,7 @@ public struct DXVK: Hashable, Equatable, Codable, Sendable {
 }
 
 extension DXVK {
-    public enum Mode: Hashable, Equatable, Codable, Sendable {
+    public enum Mode: CaseIterable, Hashable, Equatable, Codable, Sendable {
         /// DXVK is disabled
         case disabled
         /// DXVK is enabled
