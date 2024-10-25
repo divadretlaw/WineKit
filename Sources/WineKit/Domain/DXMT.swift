@@ -8,6 +8,7 @@
 import Foundation
 
 public struct DXMT: Hashable, Equatable, Codable, Sendable {
+    /// DXMT mode
     public var mode: Mode
     
     public init() {

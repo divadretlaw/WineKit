@@ -8,7 +8,9 @@
 import Foundation
 
 public struct DXVK: Hashable, Equatable, Codable, Sendable {
+    /// DXVK mode
     public var mode: Mode
+    /// DXVK HUD
     public var hud: [HUD]
     
     public init() {
