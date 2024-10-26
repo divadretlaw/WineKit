@@ -80,18 +80,19 @@ public struct VersionInfo: Hashable, Equatable, Sendable {
         offset += keyCount
         
         // Apply padding if needed
-        offset = data.paddedOffset(fromByteOffset: offset)
+        offset = data.paddedOffset(UInt16.self, fromByteOffset: offset)
         
         if valueLength == 0 {
             self.value = nil
-        } else {
-            guard let value = data.load(fromByteOffset: offset, as: FixedFileInfo.self) else { return nil }
+        } else if let value = data.load(fromByteOffset: offset, as: FixedFileInfo.self) {
             self.value = value
+        } else {
+            return nil
         }
         offset += Int(valueLength)
         
         // Apply padding if needed
-        offset = data.paddedOffset(fromByteOffset: offset)
+        offset = data.paddedOffset(UInt16.self, fromByteOffset: offset)
         
         if let stringFileInfo = StringFileInfo(data: data.copyBytes(offset...)) {
             self.stringFileInfo = stringFileInfo
@@ -101,7 +102,7 @@ public struct VersionInfo: Hashable, Equatable, Sendable {
         }
         
         // Apply padding if needed
-        offset = data.paddedOffset(fromByteOffset: offset)
+        offset = data.paddedOffset(UInt16.self, fromByteOffset: offset)
         
         if let varFileInfo = VarFileInfo(data: data.copyBytes(offset...)) {
             self.varFileInfo = varFileInfo

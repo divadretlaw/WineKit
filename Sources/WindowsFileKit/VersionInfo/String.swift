@@ -15,7 +15,7 @@ extension VersionInfo {
     /// For more information see
     /// [String](https://learn.microsoft.com/en-us/windows/win32/menurc/string-str)
     /// on *Microsoft Learn*.
-    public struct String: Hashable, Equatable, Sendable {
+    public struct String: Hashable, Equatable, Sendable, CustomStringConvertible {
         /// The length, in bytes, of this ``VersionInfo/String`` structure.
         public let length: UInt16
         /// The size, in words, of the ``VersionInfo/String/value`` member.
@@ -38,19 +38,16 @@ extension VersionInfo {
             offset.move(by: UInt16.self)
             self.valueLength = valueLength
             
-            let rawType = data.load(fromByteOffset: offset, as: UInt16.self) ?? 0
-            offset.move(by: UInt16.self)
-            guard let type = VersionInfoType(rawValue: rawType) else {
-                return nil
-            }
+            guard let type = data.load(fromByteOffset: offset, as: VersionInfoType.self) else { return nil }
             self.type = type
+            offset.move(by: UInt16.self)
             
             let keyData = data.loadRawUnicodeString(fromByteOffset: offset)
             self.rawKey = keyData
             offset += keyData.count
             
             // Apply padding if needed
-            offset = data.paddedOffset(fromByteOffset: offset)
+            offset = data.paddedOffset(UInt16.self, fromByteOffset: offset)
             
             let startIndex = data.startIndex.advanced(by: offset)
             let endIndex = startIndex.advanced(by: Int(valueLength) * MemoryLayout<UInt16>.size)
@@ -59,13 +56,20 @@ extension VersionInfo {
         
         /// The ``VersionInfo/String/rawKey`` as `Swift.String` if applicable.
         public var key: Swift.String? {
-            Swift.String(data: rawKey, encoding: .utf16LittleEndian)
+            Swift.String(data: rawKey, encoding: .utf16LittleEndian)?.trimmingCharacters(in: .controlCharacters)
         }
         
         /// The ``VersionInfo/String/value`` as `Swift.String` if applicable.
         public var stringValue: Swift.String? {
             guard type == .text else { return nil }
             return Swift.String(data: value, encoding: .utf16LittleEndian)?.trimmingCharacters(in: .controlCharacters)
+        }
+        
+        public var description: Swift.String {
+            [key, stringValue]
+                .compactMap { $0 }
+                .map { "\"\($0)\"" }
+                .joined(separator: ": ")
         }
     }
 }
@@ -102,7 +106,7 @@ extension [VersionInfo.String] {
             }
             result.append(entry)
             startIndex = startIndex.advanced(by: Int(entry.length))
-            startIndex = data.paddedIndex(from: startIndex)
+            startIndex = data.paddedIndex(UInt16.self, from: startIndex)
         }
         self = result
     }

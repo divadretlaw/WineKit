@@ -39,10 +39,10 @@ extension Data {
         return chunks
     }
     
-    func paddedIndex(from startIndex: Data.Index) -> Data.Index {
+    func paddedIndex<T>(_ type: T.Type, from startIndex: Data.Index) -> Data.Index where T: FixedWidthInteger {
         guard
             startIndex < endIndex,
-            var padding = self[startIndex...].load(as: UInt16.self)
+            var padding = self[startIndex...].load(as: T.self)
         else {
             return startIndex
         }
@@ -50,10 +50,10 @@ extension Data {
         var nextIndex = startIndex
         
         while padding == 0 {
-            nextIndex = nextIndex.advanced(by: 2)
+            nextIndex = nextIndex.advanced(by: MemoryLayout<T>.size)
             
             if nextIndex < endIndex {
-                padding = self[nextIndex...].load(as: UInt16.self) ?? 0
+                padding = self[nextIndex...].load(as: T.self) ?? 0
             } else {
                 return nextIndex
             }
@@ -61,20 +61,20 @@ extension Data {
         return nextIndex
     }
     
-    func paddedOffset(fromByteOffset offset: Int) -> Int {
-        guard var padding = load(fromByteOffset: offset, as: UInt16.self) else {
+    func paddedOffset<T>(_ type: T.Type, fromByteOffset offset: Int) -> Int where T: FixedWidthInteger {
+        guard var padding = load(fromByteOffset: offset, as: T.self) else {
             return offset
         }
         
         var nextOffset = offset
-        var nextEndIndex = startIndex.advanced(by: offset).advanced(by: 2)
+        var nextEndIndex = startIndex.advanced(by: offset).advanced(by: MemoryLayout<T>.size)
         
         while padding == 0 {
-            nextOffset.move(by: UInt16.self)
+            nextOffset.move(by: T.self)
             nextEndIndex = nextEndIndex.advanced(by: 2)
             
             if nextEndIndex < endIndex {
-                padding = load(fromByteOffset: nextOffset, as: UInt16.self) ?? 0
+                padding = load(fromByteOffset: nextOffset, as: T.self) ?? 0
             } else {
                 return nextOffset
             }

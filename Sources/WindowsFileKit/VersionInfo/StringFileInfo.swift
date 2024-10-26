@@ -63,10 +63,9 @@ extension VersionInfo {
             offset.move(by: UInt16.self)
             self.valueLength = valueLength
             
-            let rawType = data.load(fromByteOffset: offset, as: UInt16.self) ?? 0
-            offset.move(by: UInt16.self)
-            guard let type = VersionInfoType(rawValue: rawType) else { return nil }
+            guard let type = data.load(fromByteOffset: offset, as: VersionInfoType.self) else { return nil }
             self.type = type
+            offset.move(by: UInt16.self)
             
             let keyCount = StringFileInfo.KEY.count
             guard
@@ -78,7 +77,7 @@ extension VersionInfo {
             offset += keyCount
             
             // Apply padding if needed
-            offset = data.paddedOffset(fromByteOffset: offset)
+            offset = data.paddedOffset(UInt16.self, fromByteOffset: offset)
             
             let startIndex = data.startIndex.advanced(by: offset)
             let endIndex = min(startIndex.advanced(by: Int(length)), data.endIndex)
