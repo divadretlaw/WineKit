@@ -38,9 +38,9 @@ extension PortableExecutable {
         case messageTable = 11
         /// Hardware-independent cursor resource
         case groupCursor = 12 // cursor + 11
-                              /// Hardware-independent icon resource
+        /// Hardware-independent icon resource
         case groupIcon = 14 // icon + 11
-                            /// Version resource
+        /// Version resource
         case version = 16
         /// Allows a resource editing tool to associate a string with an .rc file.
         ///

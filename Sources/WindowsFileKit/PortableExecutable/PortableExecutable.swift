@@ -82,44 +82,98 @@ public struct PortableExecutable: Hashable, Equatable, Sendable {
         url.lastPathComponent
     }
     
-    private func rsrc(fileHandle: FileHandle, types: [ResourceType]? = nil) -> ResourceDirectoryTable? {
-        if let resourceSection = sections.first(where: { $0.name == ".rsrc" }) {
-            return ResourceDirectoryTable(
-                fileHandle: fileHandle,
-                pointerToRawData: UInt64(resourceSection.pointerToRawData),
-                types: types
-            )
-        } else {
-            return nil
-        }
+    public subscript(section name: String) -> Section? {
+        sections.first { $0.name == name }
     }
     
-    /// Resource Directory Table
-    public var rsrc: ResourceDirectoryTable? {
-        guard let fileHandle = try? FileHandle(forReadingFrom: url) else {
-            return nil
-        }
+    /// The resource directory table of the given section
+    ///
+    /// - Parameters:
+    ///   - types: Only read entrys of the given types. Only applies to the root table. Defaults to `nil`.
+    /// - Returns: The ``ResourceDirectoryTable`` for the section
+    public func rsrc(types: [ResourceType]? = nil) throws -> ResourceDirectoryTable? {
+        guard let section = self[section: ".rsrc"] else { return nil }
+        
+        let fileHandle = try FileHandle(forReadingFrom: url)
         defer {
             try? fileHandle.close()
         }
         
-        return rsrc(fileHandle: fileHandle)
+        return ResourceDirectoryTable(
+            fileHandle: fileHandle,
+            pointerToRawData: UInt64(section.pointerToRawData),
+            types: types
+        )
     }
     
-    /// All icon data found in the `.rsrc` section
-    public var iconData: [Data]? {
-        guard let fileHandle = try? FileHandle(forReadingFrom: url) else {
-            return nil
-        }
+    /// The resource directory table of the given section
+    ///
+    /// - Parameters:
+    ///   - types: Only read entrys of the given types. Only applies to the root table. Defaults to `nil`.
+    /// - Returns: The ``ResourceDirectoryTable`` for the section
+    public func rsrcEntryData(types: [ResourceType]? = nil) throws -> [Data]? {
+        guard let section = self[section: ".rsrc"] else { return nil }
+        
+        let fileHandle = try FileHandle(forReadingFrom: url)
         defer {
             try? fileHandle.close()
         }
         
-        guard let rsrc = rsrc(fileHandle: fileHandle, types: [.icon]) else { return nil }
-        return rsrc.allEntries
+        let table = ResourceDirectoryTable(
+            fileHandle: fileHandle,
+            pointerToRawData: UInt64(section.pointerToRawData),
+            types: types
+        )
+        
+        return table.allEntries
             .compactMap { entry -> Data? in
                 guard let offset = entry.resolveRVA(sections: sections) else { return nil }
                 return fileHandle.loadData(fromByteOffset: UInt64(offset), upToCount: Int(entry.size))
             }
+    }
+    
+    // MARK: - Raw Data
+    
+    public func rawData(section: Section) throws -> Data? {
+        let fileHandle = try FileHandle(forReadingFrom: url)
+        defer {
+            try? fileHandle.close()
+        }
+        return try section.rawData(from: fileHandle)
+    }
+    
+    public func rawData(section: String) throws -> Data? {
+        guard let section = self[section: section] else { return nil }
+        let fileHandle = try FileHandle(forReadingFrom: url)
+        defer {
+            try? fileHandle.close()
+        }
+        return try section.rawData(from: fileHandle)
+    }
+    
+    // MARK: - Helper
+    
+    /// All icon data found in the `.rsrc` section
+    public var iconData: [Data]? {
+        do {
+            return try rsrcEntryData(types: [.icon])
+        } catch {
+            return nil
+        }
+    }
+    
+    /// All version data found in the `.rsrc` section
+    public var version: [VersionInfo]? {        
+        do {
+            guard let data = try rsrcEntryData(types: [.version]) else {
+                return nil
+            }
+            return data
+                .compactMap { data -> VersionInfo? in
+                    VersionInfo(data: data)
+                }
+        } catch {
+            return nil
+        }
     }
 }

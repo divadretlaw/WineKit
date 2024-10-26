@@ -36,6 +36,14 @@ extension FileManager {
             .filter { !$0.hasDirectoryPath }
     }
     
+    func fileExists(at url: URL) -> Bool {
+        fileExists(atPath: url.path(percentEncoded: false))
+    }
+    
+    func fileExists(atPath path: String, relativeTo base: URL) -> Bool {
+        fileExists(at: base.appending(path: path.trimmingPrefix("/")))
+    }
+    
     func directories(at url: URL, options mask: FileManager.DirectoryEnumerationOptions = []) -> [URL] {
         guard let enumerator = enumerator(
             at: url,

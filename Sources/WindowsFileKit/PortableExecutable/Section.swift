@@ -74,5 +74,14 @@ extension PortableExecutable {
                 return nil
             }
         }
+        
+        /// Read the raw data of the section
+        /// - Parameters:
+        ///     - fileHandle: The file handle to read the data from.
+        /// - Returns: The raw data
+        public func rawData(from fileHandle: FileHandle) throws -> Data? {
+            try fileHandle.seek(toOffset: UInt64(pointerToRawData))
+            return try fileHandle.read(upToCount: Int(sizeOfRawData))
+        }
     }
 }
