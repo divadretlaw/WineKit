@@ -23,7 +23,9 @@ public struct Wine: Hashable, Equatable, Sendable {
     ///   - bottle: The prefix to use in wine.
     public init(executable: URL, prefix: Prefix = .default) {
         self.executable = executable
-        self.directory = executable.deletingLastPathComponent()
+        self.directory = executable
+            .deletingLastPathComponent() // wine64
+            .deletingLastPathComponent() // bin
         self.prefix = prefix
     }
     
@@ -34,7 +36,9 @@ public struct Wine: Hashable, Equatable, Sendable {
     ///   - bottle: The prefix to use in wine.
     public init(executable: URL, prefix url: URL) {
         self.executable = executable
-        self.directory = executable.deletingLastPathComponent()
+        self.directory = executable
+            .deletingLastPathComponent() // wine64
+            .deletingLastPathComponent() // bin
         self.prefix = Prefix(url: url)
     }
     
@@ -47,7 +51,7 @@ public struct Wine: Hashable, Equatable, Sendable {
     ///   - bottle: The prefix to use in wine.
     public init(folder: URL, prefix: Prefix = .default) {
         self.executable = folder.appending(path: "wine64", directoryHint: .notDirectory)
-        self.directory = folder
+        self.directory = folder.deletingLastPathComponent()
         self.prefix = prefix
     }
     
@@ -58,7 +62,7 @@ public struct Wine: Hashable, Equatable, Sendable {
     ///   - bottle: The prefix to use in wine.
     public init(folder: URL, prefix url: URL) {
         self.executable = folder.appending(path: "wine64", directoryHint: .notDirectory)
-        self.directory = folder
+        self.directory = folder.deletingLastPathComponent()
         self.prefix = Prefix(url: url)
     }
     

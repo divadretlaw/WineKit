@@ -11,7 +11,7 @@ import Foundation
 final actor WineLoader: @unchecked Sendable {
     private var wine: Wine?
     private var wineServer: WineServer?
-    private static let environment = WineEnvironment.gptk
+    private static let environment = WineEnvironment.wine(.stable)
     
     static let shared = WineLoader()
     
