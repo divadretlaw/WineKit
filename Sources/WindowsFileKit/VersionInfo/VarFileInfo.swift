@@ -16,8 +16,8 @@ extension VersionInfo {
     /// [VarFileInfo](https://learn.microsoft.com/en-us/windows/win32/menurc/varfileinfo)
     /// on *Microsoft Learn*.
     public struct VarFileInfo: Hashable, Equatable, Sendable {
-        private static let KEY = Data(
-            [
+        private static var KEY: Data {
+            Data([
                 0x56, 0x00, // V
                 0x61, 0x00, // a
                 0x72, 0x00, // r
@@ -29,12 +29,17 @@ extension VersionInfo {
                 0x6E, 0x00, // n
                 0x66, 0x00, // f
                 0x6F, 0x00, // o
-            ]
-        )
+            ])
+        }
         
+        /// The length, in bytes, of the entire ``VersionInfo/VarFileInfo-swift.struct`` block,
+        /// including all structures indicated by the ``VersionInfo/VarFileInfo-swift.struct/children`` member.
         public let length: UInt16
+        /// This member is always equal to zero.
         public let valueLength: UInt16
+        /// The type of data in the version resource.
         public let type: VersionInfoType
+        /// Typically contains a list of languages that the application or DLL supports.
         public let children: Data
         
         init?(data: Data) {

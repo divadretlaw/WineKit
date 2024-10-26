@@ -16,10 +16,15 @@ extension VersionInfo {
     /// [String](https://learn.microsoft.com/en-us/windows/win32/menurc/string-str)
     /// on *Microsoft Learn*.
     public struct String: Hashable, Equatable, Sendable {
+        /// The length, in bytes, of this ``VersionInfo/String`` structure.
         public let length: UInt16
+        /// The size, in words, of the ``VersionInfo/String/value`` member.
         public let valueLength: UInt16
+        /// The type of data in the version resource
         public let type: VersionInfoType
-        public let key: Swift.String?
+        /// An arbitrary Unicode string. The ``VersionInfo/String/rawKey`` member can be one or more of the values in ``VersionInfo/String/Key-swift.enum``
+        public let rawKey: Data
+        /// A zero-terminated string. See the ``VersionInfo/String/Key-swift.enum`` member description for more information.
         public let value: Data
         
         init?(data: Data) {
@@ -41,7 +46,7 @@ extension VersionInfo {
             self.type = type
             
             let keyData = data.loadRawUnicodeString(fromByteOffset: offset)
-            self.key = Swift.String(data: keyData, encoding: .utf16LittleEndian)
+            self.rawKey = keyData
             offset += keyData.count
             
             // Apply padding if needed
@@ -52,9 +57,35 @@ extension VersionInfo {
             self.value = data.copyBytes(startIndex..<endIndex)
         }
         
+        /// The ``VersionInfo/String/rawKey`` as `Swift.String` if applicable.
+        public var key: Swift.String? {
+            Swift.String(data: rawKey, encoding: .utf16LittleEndian)
+        }
+        
+        /// The ``VersionInfo/String/value`` as `Swift.String` if applicable.
         public var stringValue: Swift.String? {
             guard type == .text else { return nil }
             return Swift.String(data: value, encoding: .utf16LittleEndian)?.trimmingCharacters(in: .controlCharacters)
+        }
+    }
+}
+
+extension VersionInfo.String {
+    public enum Key: String, CaseIterable, Hashable, Equatable, Sendable, CustomStringConvertible {
+        case companyName = "CompanyName"
+        case fileDescription = "FileDescription"
+        case fileVersion = "FileVersion"
+        case internalName = "InternalName"
+        case legalCopyright = "LegalCopyright"
+        case legalTrademarks = "LegalTrademarks"
+        case originalFilename = "OriginalFilename"
+        case privateBuild = "PrivateBuild"
+        case productName = "ProductName"
+        case productVersion = "ProductVersion"
+        case specialBuild = "SpecialBuild"
+        
+        public var description: String {
+            rawValue
         }
     }
 }

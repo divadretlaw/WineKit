@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  FixedFileInfo.swift
 //  WineKit
 //
 //  Created by David Walter on 25.10.24.
@@ -14,17 +14,44 @@ extension VersionInfo {
     /// [VS_FIXEDFILEINFO](https://learn.microsoft.com/en-us/windows/win32/api/verrsrc/ns-verrsrc-vs_fixedfileinfo)
     /// on *Microsoft Learn*.
     public struct FixedFileInfo: Hashable, Equatable, Sendable {
+        /// The binary version number of this structure.
+        ///
+        /// The high-order word of this member contains the major version number,
+        /// and the low-order word contains the minor version number.
         public let structVersion: UInt32
+        /// The most significant 32 bits of the file's binary version number.
+        ///
+        /// This member is used with ``VersionInfo/FixedFileInfo/fileVersionLS`` to form a 64-bit value used for numeric comparisons.
         public let fileVersionMS: UInt32
+        /// The least significant 32 bits of the file's binary version number.
+        ///
+        /// This member is used with ``VersionInfo/FixedFileInfo/fileVersionMS`` to form a 64-bit value used for numeric comparisons.
         public let fileVersionLS: UInt32
+        /// The most significant 32 bits of the binary version number of the product with which this file was distributed.
+        ///
+        /// This member is used with ``VersionInfo/FixedFileInfo/productVersionLS`` to form a 64-bit value used for numeric comparisons.
         public let productVersionMS: UInt32
+        /// The least significant 32 bits of the binary version number of the product with which this file was distributed.
+        ///
+        /// This member is used with ``VersionInfo/FixedFileInfo/productVersionMS`` to form a 64-bit value used for numeric comparisons.
         public let productVersionLS: UInt32
+        /// Contains a bitmask that specifies the valid bits in ``VersionInfo/FixedFileInfo/fileFlags``.
+        ///
+        /// A bit is valid only if it was defined when the file was created.
         public let fileFlagsMask: UInt32
+        /// Contains a bitmask that specifies the Boolean attributes of the file.
         public let fileFlags: UInt32
+        /// The operating system for which this file was designed.
         public let fileOS: VOS
+        /// The general type of file.
         public let fileType: VFT
+        /// The function of the file.
+        ///
+        /// The possible values depend on the value of ``VersionInfo/FixedFileInfo/fileType``.
         public let fileSubtype: UInt32
+        /// The most significant 32 bits of the file's 64-bit binary creation date and time stamp.
         public let fileDateMS: UInt32
+        /// The least significant 32 bits of the file's 64-bit binary creation date and time stamp.
         public let fileDateLS: UInt32
         
         init?(data: Data) {

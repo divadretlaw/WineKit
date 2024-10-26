@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  VersionInfo.swift
 //  WineKit
 //
 //  Created by David Walter on 25.10.24.
@@ -15,8 +15,8 @@ import Foundation
 /// [VS_VERSIONINFO](https://learn.microsoft.com/en-us/windows/win32/menurc/vs-versioninfo)
 /// on *Microsoft Learn*.
 public struct VersionInfo: Hashable, Equatable, Sendable {
-    private static let KEY = Data(
-        [
+    private static var KEY: Data {
+        Data([
             0x56, 0x00, // V
             0x53, 0x00, // S
             0x5f, 0x00, // _
@@ -32,14 +32,26 @@ public struct VersionInfo: Hashable, Equatable, Sendable {
             0x4e, 0x00, // N
             0x46, 0x00, // F
             0x4f, 0x00, // O
-        ]
-    )
+        ])
+    }
     
+    /// The length, in bytes, of the ``VersionInfo`` structure.
+    ///
+    /// This length does not include any padding that aligns any subsequent version resource data on a 32-bit boundary.
     public let length: UInt16
+    /// The length, in bytes, of the ``VersionInfo/value`` member.
+    ///
+    /// This value is zero if there is no ``VersionInfo/value`` member associated with the current version structure.
     public let valueLength: UInt16
+    /// The type of data in the version resource
     public let type: VersionInfoType
+    /// Arbitrary data associated with this ``VersionInfo`` structure.
+    ///
+    /// The ``VersionInfo/valueLength`` member specifies the length of this member; if ``VersionInfo/valueLength`` is zero, this member does not exist.
     public let value: FixedFileInfo?
+    /// Optional ``VersionInfo/StringFileInfo-swift.struct`` structure.
     public let stringFileInfo: StringFileInfo?
+    /// Optional ``VersionInfo/VarFileInfo-swift.struct`` structure.
     public let varFileInfo: VarFileInfo?
     
     init?(data: Data) {
@@ -101,9 +113,11 @@ public struct VersionInfo: Hashable, Equatable, Sendable {
 }
 
 extension VersionInfo {
+    /// The type of data in the version resource
     public enum VersionInfoType: UInt16, Hashable, Equatable, Sendable {
+        /// The version resource contains binary data.
         case binary = 0
+        /// The version resource contains text data
         case text = 1
     }
-    
 }

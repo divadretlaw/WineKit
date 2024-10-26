@@ -17,10 +17,21 @@ extension VersionInfo {
     /// [StringTable](https://learn.microsoft.com/en-us/windows/win32/menurc/stringtable)
     /// on *Microsoft Learn*.
     public struct StringTable: Hashable, Equatable, Sendable {
+        /// The length, in bytes, of this ``VersionInfo/StringTable`` structure,
+        /// including all structures indicated by the ``VersionInfo/StringTable/children`` member.
         public let length: UInt16
+        /// This member is always equal to zero.
         public let valueLength: UInt16
+        /// The type of data in the version resource
         public let type: VersionInfoType
-        public let key: Data
+        /// An 8-digit hexadecimal number stored as a Unicode string.
+        ///
+        /// The four most significant digits represent the language identifier.
+        /// The four least significant digits represent the code page for which the data is formatted.
+        /// Each Microsoft Standard Language identifier contains two parts: the low-order 10 bits specify the major language,
+        /// and the high-order 6 bits specify the sublanguage.
+        public let rawKey: Data
+        /// An array of one or more ``VersionInfo/String`` structures.
         public let children: [String]
         
         init?(data: Data) {
@@ -43,8 +54,9 @@ extension VersionInfo {
             guard let type = VersionInfoType(rawValue: rawType) else { return nil }
             self.type = type
             
-            key = Data()
-            offset += 16
+            let keyData = data.loadRawUnicodeString(fromByteOffset: offset)
+            self.rawKey = keyData
+            offset += keyData.count
             
             // Apply padding if needed
             offset = data.paddedOffset(fromByteOffset: offset)
@@ -54,28 +66,13 @@ extension VersionInfo {
             self.children = [String](data: data.copyBytes(startIndex..<endIndex)) ?? []
         }
         
-        public subscript(key: Key) -> String? {
-            children.first { $0.key == key.rawValue }
+        /// The ``VersionInfo/String/rawKey`` as `Swift.String` if applicable.
+        public var key: Swift.String? {
+            Swift.String(data: rawKey, encoding: .utf16LittleEndian)
         }
-    }
-}
-
-extension VersionInfo.StringTable {
-    public enum Key: String, CaseIterable, Hashable, Equatable, Sendable, CustomStringConvertible {
-        case companyName = "CompanyName"
-        case fileDescription = "FileDescription"
-        case fileVersion = "FileVersion"
-        case internalName = "InternalName"
-        case legalCopyright = "LegalCopyright"
-        case legalTrademarks = "LegalTrademarks"
-        case originalFilename = "OriginalFilename"
-        case privateBuild = "PrivateBuild"
-        case productName = "ProductName"
-        case productVersion = "ProductVersion"
-        case specialBuild = "SpecialBuild"
         
-        public var description: String {
-            rawValue
+        public subscript(key: String.Key) -> String? {
+            children.first { $0.key == key.rawValue }
         }
     }
 }
