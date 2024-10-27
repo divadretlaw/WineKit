@@ -79,7 +79,7 @@ extension ShellLink {
                     
                     let commonPathSuffixOffset = initialOffset + UInt64(commonPathSuffixOffsetUnicode)
                     self.commonPathSuffix = fileHandle.loadString(fromByteOffset: commonPathSuffixOffset, encoding: .utf16)
-                } else { // Offsets to the optional fields are not specified.
+                } else {  // Offsets to the optional fields are not specified.
                     let localPathOffset = initialOffset + UInt64(localBasePathOffset)
                     self.localBasePath = fileHandle.loadString(fromByteOffset: localPathOffset, encoding: .windowsCP1254)
                     

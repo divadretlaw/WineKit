@@ -8,7 +8,10 @@
 import Foundation
 
 extension Dictionary where Key: Hashable {
-    func merging(_ other: [Key: Value]?, uniquingKeysWith combine: (Value, Value) throws -> Value) rethrows -> [Key: Value] {
+    func merging(
+        _ other: [Key: Value]?,
+        uniquingKeysWith combine: (Value, Value) throws -> Value
+    ) rethrows -> [Key: Value] {
         guard let other else { return self }
         return try merging(other, uniquingKeysWith: combine)
     }

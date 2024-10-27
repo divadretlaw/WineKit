@@ -163,7 +163,7 @@ public struct PortableExecutable: Hashable, Equatable, Sendable {
     }
     
     /// All version data found in the `.rsrc` section
-    public var version: [VersionInfo]? {        
+    public var version: [VersionInfo]? {
         do {
             guard let data = try rsrcEntryData(types: [.version]) else {
                 return nil

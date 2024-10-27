@@ -128,7 +128,7 @@ public final class WineRegistry: Sendable {
     /// Change the build version of Windows used by this wine instance
     ///
     /// - Parameter windowsVersion: The build version of Windows to use.
-    /// 
+    ///
     public func changeBuildVersion(_ buildVersion: String) async throws {
         try await add(
             keyPath: #"HKLM\Software\Microsoft\Windows NT\CurrentVersion"#,

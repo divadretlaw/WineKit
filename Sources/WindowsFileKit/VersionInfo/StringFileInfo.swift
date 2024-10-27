@@ -18,20 +18,20 @@ extension VersionInfo {
     public struct StringFileInfo: Hashable, Equatable, Sendable {
         private static var KEY: Data {
             Data([
-                0x53, 0x00, // S
-                0x74, 0x00, // t
-                0x72, 0x00, // r
-                0x69, 0x00, // i
-                0x6E, 0x00, // n
-                0x67, 0x00, // g
-                0x46, 0x00, // F
-                0x69, 0x00, // i
-                0x6C, 0x00, // l
-                0x65, 0x00, // e
-                0x49, 0x00, // I
-                0x6E, 0x00, // n
-                0x66, 0x00, // f
-                0x6F, 0x00, // o
+                0x53, 0x00,  // S
+                0x74, 0x00,  // t
+                0x72, 0x00,  // r
+                0x69, 0x00,  // i
+                0x6E, 0x00,  // n
+                0x67, 0x00,  // g
+                0x46, 0x00,  // F
+                0x69, 0x00,  // i
+                0x6C, 0x00,  // l
+                0x65, 0x00,  // e
+                0x49, 0x00,  // I
+                0x6E, 0x00,  // n
+                0x66, 0x00,  // f
+                0x6F, 0x00,  // o
             ])
         }
         

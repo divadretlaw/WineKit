@@ -17,7 +17,7 @@ public struct Wine: Hashable, Equatable, Sendable {
     // MARK: - Init - Executable
     
     /// Create a Wine instance
-    /// 
+    ///
     /// - Parameters:
     ///   - executable: The wine executable binary.
     ///   - bottle: The prefix to use in wine.

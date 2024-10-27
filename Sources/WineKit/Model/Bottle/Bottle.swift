@@ -227,7 +227,7 @@ public struct Bottle: Identifiable, Hashable, Equatable, Comparable, Sendable {
     }
     
     public func loadStartMenuPrograms() async -> [Program] {
-        var  folders: [URL] = [
+        var folders: [URL] = [
             url
                 .appending(path: "drive_c")
                 .appending(path: "ProgramData")

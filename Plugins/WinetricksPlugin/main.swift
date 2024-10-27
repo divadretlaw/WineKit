@@ -79,6 +79,7 @@ struct WinetricksPlugin: CommandPlugin {
                     }
                 }
             }
+            
             """
             
             let target = URL(filePath: output.appending(subpath: "Verbs+\(verb.0).swift").string)

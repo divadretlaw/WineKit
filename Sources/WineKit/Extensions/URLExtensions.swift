@@ -10,7 +10,7 @@ import CryptoKit
 
 extension URL {
     func formattedPath(percentEncoded: Bool = true) -> String {
-        return path(percentEncoded: percentEncoded)
+        path(percentEncoded: percentEncoded)
             .replacingOccurrences(of: "/Users/\(NSUserName())", with: "~")
     }
     

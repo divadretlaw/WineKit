@@ -14,7 +14,11 @@ public enum WineEnvironment: Identifiable, Hashable, Equatable, Codable, Sendabl
     case custom(String)
     
     public init(rawValue: String) {
-        let url = URL(filePath: rawValue.replacingOccurrences(of: "~", with: NSHomeDirectory()), directoryHint: .isDirectory, relativeTo: nil)
+        let url = URL(
+            filePath: rawValue.replacingOccurrences(of: "~", with: NSHomeDirectory()),
+            directoryHint: .isDirectory,
+            relativeTo: nil
+        )
         switch url {
         case WineEnvironment.wine(.stable).url:
             self = .wine(.stable)
@@ -53,7 +57,11 @@ public enum WineEnvironment: Identifiable, Hashable, Equatable, Codable, Sendabl
     
     /// URL to the wine binaries
     public var url: URL {
-        URL(filePath: rawValue.replacingOccurrences(of: "~", with: NSHomeDirectory()), directoryHint: .isDirectory, relativeTo: nil)
+        URL(
+            filePath: rawValue.replacingOccurrences(of: "~", with: NSHomeDirectory()),
+            directoryHint: .isDirectory,
+            relativeTo: nil
+        )
     }
     
     // MARK: - Identifiable
@@ -82,5 +90,27 @@ public enum WineEnvironment: Identifiable, Hashable, Equatable, Codable, Sendabl
         let container = try decoder.singleValueContainer()
         let rawValue = try container.decode(String.self)
         self.init(rawValue: rawValue)
+    }
+}
+
+extension WineEnvironment: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case let .wine(version):
+            switch version {
+            case .stable:
+                "Wine"
+            case .development:
+                "Wine (Development)"
+            case .staging:
+                "Wine (Staging)"
+            }
+        case .gptk:
+            "GPTK"
+        case .whisky:
+            "WhiskyWine"
+        case let .custom(url):
+            "Custom (\(url))"
+        }
     }
 }

@@ -51,8 +51,8 @@ public struct ShellLink: Hashable, Equatable, Sendable {
         if header.linkFlags.contains(.hasLinkTargetIDList) {
             let targetIDList = LinkTargetIDList(fileHandle: fileHandle, offset: offset)
             self.targetIDList = targetIDList
-            offset.move(by: UInt16.self) // Move by size of targetIDList
-            offset += UInt64(targetIDList.size) // Move by value of targetIDList
+            offset.move(by: UInt16.self)  // Move by size of targetIDList
+            offset += UInt64(targetIDList.size)  // Move by value of targetIDList
         } else {
             self.targetIDList = nil
         }

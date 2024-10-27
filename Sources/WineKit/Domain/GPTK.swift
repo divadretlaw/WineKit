@@ -10,10 +10,12 @@ import Metal
 
 public struct GPTK: Hashable, Equatable, Codable, Sendable {
     /// Advertise AVX
+    ///
     /// > Note:
     /// > Will only be enabled on macOS 15+
     public var avx: Bool
     /// Enable DirectX Ray-Tracing
+    ///
     /// > Note:
     /// > Will only be enabled on device that support ray tracing
     public var dxr: Bool

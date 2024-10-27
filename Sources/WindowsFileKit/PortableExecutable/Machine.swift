@@ -22,7 +22,7 @@ extension PortableExecutable {
         ///
         /// Alpha 64 and AXP 64 share the same value.
         /// Matsushita AM33
-        case alpha64orAXP64 = 0x284 // Alpha 64 and AXP 64 share the same value
+        case alpha64orAXP64 = 0x284  // Alpha 64 and AXP 64 share the same value
         case am33 = 0x1d3
         /// x64
         case amd64 = 0x8664

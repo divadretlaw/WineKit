@@ -89,7 +89,7 @@ public enum WindowsVersion: String, CaseIterable, Identifiable, Hashable, Equata
     }
 }
 
-extension WindowsVersion {
+extension WindowsVersion: CustomStringConvertible {
     public var description: String {
         switch self {
         case .windowsXP:
