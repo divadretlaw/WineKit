@@ -9,6 +9,7 @@ import Foundation
 
 /// WineServer synchronization mode
 public enum SynchronizationMode: String, CaseIterable, Codable, Identifiable, Hashable, Equatable, Sendable {
+    /// Disabled
     case disabled
     /// eventfd-based synchronization
     case esync = "WINEESYNC"

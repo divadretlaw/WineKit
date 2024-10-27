@@ -105,7 +105,7 @@ public final class WineProcess: Identifiable, Hashable, Equatable, Sendable {
                 try self.process.run()
                 continuation.yield(.launched)
             } catch {
-                continuation.yield(.terminated)
+                continuation.yield(.error(error.localizedDescription))
                 continuation.finish()
             }
             

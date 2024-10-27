@@ -11,6 +11,9 @@ import XCTest
 final class PortableExecutableTests: XCTestCase {
     func testPortableExecutable32() throws {
         let url = URL(filePath: "/Applications/Wine Stable.app/Contents/Resources/wine/lib/wine/i386-windows/winecfg.exe")
+        guard FileManager.default.fileExists(atPath: url.path(percentEncoded: false)) else {
+            throw XCTSkip("Wine Stable not installed")
+        }
         let peFile = try XCTUnwrap(PortableExecutable(url: url))
         XCTAssertEqual(peFile.optionalHeader?.magic, .pe32)
         // PE32 contains BaseOfData
@@ -19,6 +22,9 @@ final class PortableExecutableTests: XCTestCase {
     
     func testPortableExecutable32Plus() throws {
         let url = URL(filePath: "/Applications/Wine Stable.app/Contents/Resources/wine/lib/wine/x86_64-windows/winecfg.exe")
+        guard FileManager.default.fileExists(atPath: url.path(percentEncoded: false)) else {
+            throw XCTSkip("Wine Stable not installed")
+        }
         let peFile = try XCTUnwrap(PortableExecutable(url: url))
         XCTAssertEqual(peFile.optionalHeader?.magic, .pe32Plus)
         // PE32+ does not contain BaseOfData
@@ -27,6 +33,9 @@ final class PortableExecutableTests: XCTestCase {
     
     func testIconData() throws {
         let url = URL(filePath: "/Applications/Wine Stable.app/Contents/Resources/wine/lib/wine/x86_64-windows/iexplore.exe")
+        guard FileManager.default.fileExists(atPath: url.path(percentEncoded: false)) else {
+            throw XCTSkip("Wine Stable not installed")
+        }
         let peFile = try XCTUnwrap(PortableExecutable(url: url))
         XCTAssertNotNil(peFile.iconData)
         let iconData = try XCTUnwrap(peFile.iconData)
@@ -35,6 +44,9 @@ final class PortableExecutableTests: XCTestCase {
     
     func testVersionData() throws {
         let url = URL(filePath: "/Applications/Wine Stable.app/Contents/Resources/wine/lib/wine/x86_64-windows/iexplore.exe")
+        guard FileManager.default.fileExists(atPath: url.path(percentEncoded: false)) else {
+            throw XCTSkip("Wine Stable not installed")
+        }
         let peFile = try XCTUnwrap(PortableExecutable(url: url))
         let version = try XCTUnwrap(peFile.version)
         XCTAssertFalse(version.isEmpty)

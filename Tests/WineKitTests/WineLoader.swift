@@ -7,8 +7,9 @@
 
 import Foundation
 @testable import WineKit
+import XCTest
 
-final actor WineLoader: @unchecked Sendable {
+final actor WineLoader {
     private var wine: Wine?
     private var wineServer: WineServer?
     private static let environment = WineEnvironment.wine(.stable)
@@ -28,6 +29,9 @@ final actor WineLoader: @unchecked Sendable {
             if let wine = await shared.wine {
                 return wine
             } else {
+                guard FileManager.default.fileExists(atPath: environment.rawValue) else {
+                    throw XCTSkip("Wine '\(environment)' is not installed")
+                }
                 let executable = URL(filePath: "\(environment.rawValue)/wine64", directoryHint: .isDirectory, relativeTo: nil)
                 let prefix = FileManager.default.temporaryDirectory.appending(path: UUID().uuidString)
                 try? FileManager.default.createDirectory(at: prefix, withIntermediateDirectories: true)
