@@ -18,7 +18,9 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "WineKit", dependencies: ["WindowsFileKit"]
+            name: "WineKit",
+            dependencies: ["WindowsFileKit"],
+            resources: [.process("Resources")]
         ),
         .target(
             name: "WindowsFileKit"

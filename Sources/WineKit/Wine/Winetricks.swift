@@ -16,20 +16,18 @@ public struct Winetricks: Hashable, Equatable, Sendable {
     /// Create a Winetricks instance
     ///
     /// - Parameters:
-    ///   - executable: The winetricks executable binary.
     ///   - bottle: The prefix to use in wine.
     public init(executable: URL, prefix: Prefix) {
-        self.executable = executable
+        self.executable = Bundle.module.url(forResource: "winetricks", withExtension: "sh")!
         self.prefix = prefix
     }
     
     /// Create a Winetricks instance
     ///
     /// - Parameters:
-    ///   - executable: The winetricks executable binary.
     ///   - bottle: The prefix to use in wine.
-    public init(executable: URL, prefix url: URL) {
-        self.executable = executable
+    public init(prefix url: URL) {
+        self.executable = Bundle.module.url(forResource: "winetricks", withExtension: "sh")!
         self.prefix = Prefix(url: url)
     }
     
@@ -61,13 +59,6 @@ public struct Winetricks: Hashable, Equatable, Sendable {
         try await run(verb: verb.rawValue)
     }
     
-    /// Run a verb from the category ``Winetricks/Game``
-    ///
-    /// - Parameter verb: The verb to run.
-    public func run(verb: Winetricks.Game) async throws {
-        try await run(verb: verb.rawValue)
-    }
-    
     /// Run a verb from the category ``Winetricks/Setting``
     ///
     /// - Parameter verb: The verb to run.
@@ -85,7 +76,7 @@ public struct Winetricks: Hashable, Equatable, Sendable {
         for await output in stream {
             switch output {
             case .launched:
-                Logger.wineKit.info("Launched Wine '\(process)'")
+                Logger.wineKit.info("Launched Winetricks '\(process)'")
             case let .output(string):
                 let message = string.trimmingCharacters(in: .whitespacesAndNewlines)
                 if !message.isEmpty {
@@ -98,9 +89,9 @@ public struct Winetricks: Hashable, Equatable, Sendable {
                 }
             case .terminated:
                 if process.terminationStatus != 0 {
-                    throw WineError.crash("Exited Wine '\(process)' with \(process.terminationStatus)")
+                    throw WineError.crash("Exited Winetricks '\(process)' with \(process.terminationStatus)")
                 } else {
-                    Logger.wineKit.info("Exited Wine '\(process)' with \(process.terminationStatus)")
+                    Logger.wineKit.info("Exited Winetricks '\(process)' with \(process.terminationStatus)")
                 }
             }
         }

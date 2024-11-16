@@ -12,23 +12,38 @@ import PackagePlugin
 struct WinetricksPlugin: CommandPlugin {
     func performCommand(context: PluginContext, arguments: [String]) async throws {
         guard let target = try context.package.targets(named: ["WineKit"]).first else { return }
-		let directory = URL(filePath: target.directory.string)
+        let directory = URL(filePath: target.directory.string)
+        
+        try await updateScript(directory: directory)
+        try await updateVerbs(directory: directory)
+    }
+    
+    private func updateScript(directory: URL) async throws {
+        let output = directory
+            .appending(path: "Resources", directoryHint: .isDirectory)
+            .appending(path: "winetricks.sh")
+        
+        let url = URL(string: "https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks")!
+        let (data, _) = try await URLSession.shared.data(from: url)
+        try data.write(to: output)
+    }
+    
+    private func updateVerbs(directory: URL) async throws {
 		let output = directory
 			.appending(path: "Domain", directoryHint: .isDirectory)
 			.appending(path: "Verbs", directoryHint: .isDirectory)
         
         let verbURL = URL(string: "https://raw.githubusercontent.com/Winetricks/winetricks/master/files/verbs/")!
-        let verbs = [
+        let verbs: [(category: String, source: String)] = [
             ("App", "apps.txt"),
             ("Benchmark", "benchmarks.txt"),
             ("DLL", "dlls.txt"),
             ("Font", "fonts.txt"),
-            ("Game", "games.txt"),
             ("Setting", "settings.txt")
         ]
         
         for verb in verbs {
-            guard let url = URL(string: verb.1, relativeTo: verbURL) else { continue }
+            guard let url = URL(string: verb.source, relativeTo: verbURL) else { continue }
             let (data, _) = try await URLSession.shared.data(from: url)
             guard let string = String(data: data, encoding: .utf8) else { continue }
             
@@ -43,12 +58,15 @@ struct WinetricksPlugin: CommandPlugin {
             }
             
             let cases = dictionary
-                .map { $0.key }
                 .sorted { lhs, rhs in
-                    lhs.formatted() < rhs.formatted()
+                    lhs.key.formatted() < rhs.key.formatted()
                 }
                 .reduce("") { result, verb in
-                    return result + "\t\tcase \(verb.formatted()) = \"\(verb)\"\n"
+                    let block = """
+                    \t\t/// \(verb.value)
+                    \t\tcase \(verb.key.formatted()) = \"\(verb.key)\"
+                    """
+                    return result + block + "\n"
                 }
             
             let description = dictionary
@@ -56,31 +74,38 @@ struct WinetricksPlugin: CommandPlugin {
                     lhs.key.formatted() < rhs.key.formatted()
                 }
                 .reduce("") { result, element in
-                    return result + "\t\t\tcase .\(element.key.formatted()):\n\t\t\t\treturn \"\(element.value.replacingOccurrences(of: "\\", with: "\\\\"))\"\n"
+                    let block = """
+                    \t\t\tcase .\(element.key.formatted()):
+                    \t\t\t\treturn \"\(element.value.replacingOccurrences(of: "\\", with: "\\\\"))\"
+                    """
+                    return result + block + "\n"
                 }
             
             let content = """
             //
-            //  Verbs+\(verb.0).swift
-            //  WineKit
+            // Verbs+\(verb.category).swift
+            // WineKit
+            // 
+            // Source: https://github.com/Winetricks/winetricks
             //
-            //  Automatically generated on \(Date.now.formatted(date: .numeric, time: .omitted)).
+            // Automatically generated on \(Date.now.formatted(date: .numeric, time: .omitted)).
             //
             
             import Foundation
             
             extension Winetricks {
-                public enum \(verb.0): String, Hashable, Equatable, Codable, CaseIterable, CustomStringConvertible, Sendable {
+            \t/// Winetricks verbs from \(verb.category).txt
+            \tpublic enum \(verb.category): String, Hashable, Equatable, Codable, CaseIterable, CustomStringConvertible, Sendable {
             \(cases.trimmingCharacters(in: .newlines))
             
-                    // MARK: - CustomStringConvertible
-                
-                    public var description: String {
-                        switch self {
+            \t\t// MARK: - CustomStringConvertible
+            
+            \t\tpublic var description: String {
+            \t\t\tswitch self {
             \(description.trimmingCharacters(in: .newlines))
-                        }
-                    }
-                }
+            \t\t\t}
+            \t\t}
+            \t}
             }
             
             """
