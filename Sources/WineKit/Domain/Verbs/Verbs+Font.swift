@@ -2,7 +2,7 @@
 //  Verbs+Font.swift
 //  WineKit
 //
-//  Created by David Walter on 15.12.23.
+//  Automatically generated on 16.11.2024.
 //
 
 import Foundation

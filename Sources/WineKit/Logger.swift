@@ -9,13 +9,13 @@ import Foundation
 import OSLog
 
 extension Logger {
-    static var wine: Logger {
+    static let wine: Logger = {
         Logger(subsystem: "at.davidwalter.WineKit", category: "Wine")
-    }
+    }()
     
-    static var wineKit: Logger {
+    static let wineKit: Logger = {
         Logger(subsystem: "at.davidwalter.WineKit", category: "WineKit")
-    }
+    }()
     
     init(process: WineProcess) {
         self = Logger(subsystem: "at.davidwalter.WineKit", category: process.description)

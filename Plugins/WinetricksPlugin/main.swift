@@ -12,7 +12,10 @@ import PackagePlugin
 struct WinetricksPlugin: CommandPlugin {
     func performCommand(context: PluginContext, arguments: [String]) async throws {
         guard let target = try context.package.targets(named: ["WineKit"]).first else { return }
-        let output = target.directory.appending(subpath: "Domain").appending(subpath: "Verbs")
+		let directory = URL(filePath: target.directory.string)
+		let output = directory
+			.appending(path: "Domain", directoryHint: .isDirectory)
+			.appending(path: "Verbs", directoryHint: .isDirectory)
         
         let verbURL = URL(string: "https://raw.githubusercontent.com/Winetricks/winetricks/master/files/verbs/")!
         let verbs = [
@@ -61,7 +64,7 @@ struct WinetricksPlugin: CommandPlugin {
             //  Verbs+\(verb.0).swift
             //  WineKit
             //
-            //  Created by David Walter on 15.12.23.
+            //  Automatically generated on \(Date.now.formatted(date: .numeric, time: .omitted)).
             //
             
             import Foundation
@@ -82,7 +85,7 @@ struct WinetricksPlugin: CommandPlugin {
             
             """
             
-            let target = URL(filePath: output.appending(subpath: "Verbs+\(verb.0).swift").string)
+            let target = output.appending(path: "Verbs+\(verb.0).swift")
             print(target)
             try content.write(to: target, atomically: true, encoding: .utf8)
         }

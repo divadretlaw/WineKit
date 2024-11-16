@@ -120,9 +120,9 @@ public struct Bottle: Identifiable, Hashable, Equatable, Comparable, Sendable {
         switch icon {
         case let .systemName(name):
             return NSImage(systemSymbolName: name, accessibilityDescription: nil)
-        case let .png(data):
-            return NSImage(data: data)
-        case let .jpeg(data):
+		case let .png(data),
+			 let .jpeg(data),
+			 let .heic(data):
             return NSImage(data: data)
         case let .url(url):
             do {

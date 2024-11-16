@@ -15,6 +15,8 @@ public enum BottleIcon: Hashable, Equatable, Codable, Sendable {
     case png(Data)
     /// A JPEG encoded image
     case jpeg(Data)
+	/// A HEIC encoded image
+	case heic(Data)
     /// A URL to an image
     ///
     /// If the URL is nil, then `Icon` relative to the bottle config is assumed to be the URL.
@@ -35,6 +37,9 @@ public enum BottleIcon: Hashable, Equatable, Codable, Sendable {
         case let .jpeg(data):
             let value = "data:image/jpeg;base64,\(data.base64EncodedString())"
             try container.encode(value)
+		case let .heic(data):
+			let value = "data:image/heic;base64,\(data.base64EncodedString())"
+			try container.encode(value)
         case let .url(url):
             let value = "data:text/uri-list;\(url?.path(percentEncoded: false) ?? "")"
             try container.encode(value)
@@ -53,15 +58,23 @@ public enum BottleIcon: Hashable, Equatable, Codable, Sendable {
         case "data:image/sf-symbol":
             self = .systemName(String(data))
         case "data:image/png":
-            guard let data = Data(base64Encoded: String(data.dropFirst(7))) else {
+			let base64 = String(data.dropFirst(7)) // drop 'base64,'
+            guard let data = Data(base64Encoded: base64) else {
                 throw DecodingError.dataCorrupted(.init(codingPath: [], debugDescription: "Data was not Base64 Encoded"))
             }
             self = .png(data)
         case "data:image/jpeg":
-            guard let data = Data(base64Encoded: String(data.dropFirst(7))) else {
+			let base64 = String(data.dropFirst(7)) // drop 'base64,'
+			guard let data = Data(base64Encoded: base64) else {
                 throw DecodingError.dataCorrupted(.init(codingPath: [], debugDescription: "Data was not Base64 Encoded"))
             }
             self = .jpeg(data)
+		case "data:image/heic":
+			let base64 = String(data.dropFirst(7)) // drop 'base64,'
+			guard let data = Data(base64Encoded: base64) else {
+				throw DecodingError.dataCorrupted(.init(codingPath: [], debugDescription: "Data was not Base64 Encoded"))
+			}
+			self = .heic(data)
         case "data:text/uri-list":
             if data.isEmpty {
                 self = .url(nil)
