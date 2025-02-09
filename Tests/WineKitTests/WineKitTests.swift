@@ -85,4 +85,13 @@ final class WineKitTests: XCTestCase {
         try await Task.sleep(for: .seconds(1))
         XCTAssertTrue(TaskManager.shared.systemTasks.isEmpty)
     }
+    
+    func testWinetricks() async throws {
+        let wine = try await WineLoader.wine
+        let winetricks = try await WineLoader.wine.winetricks
+        
+        try await winetricks.run(verb: .win7)
+        let windowsVersion = try await wine.registry.windowsVersion
+        XCTAssertEqual(windowsVersion, .windows7)
+    }
 }

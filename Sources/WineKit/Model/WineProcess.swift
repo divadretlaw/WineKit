@@ -50,15 +50,14 @@ public final class WineProcess: Identifiable, Hashable, Equatable, Sendable {
         self.process = process
     }
     
-    init(winetricks: Winetricks, verb: String) {
+    init(winetricks: Winetricks, verb: String, environment: [String: String]) {
         let process = Process()
         process.executableURL = winetricks.executable
         process.arguments = [verb]
-        process.currentDirectoryURL = winetricks.prefix.url
         process.qualityOfService = .userInitiated
         
         process.environment = [:]
-            .merging(winetricks.prefix.environment) { _, new in
+            .merging(environment) { _, new in
                 new
             }
         

@@ -32,7 +32,7 @@ final actor WineLoader {
                 guard FileManager.default.fileExists(atPath: environment.rawValue) else {
                     throw XCTSkip("Wine '\(environment)' is not installed")
                 }
-                let executable = URL(filePath: "\(environment.rawValue)/wine64", directoryHint: .isDirectory, relativeTo: nil)
+                let executable = URL(filePath: "\(environment.rawValue)/wine", directoryHint: .notDirectory, relativeTo: nil)
                 let prefix = FileManager.default.temporaryDirectory.appending(path: UUID().uuidString)
                 try? FileManager.default.createDirectory(at: prefix, withIntermediateDirectories: true)
                 let wine = Wine(executable: executable, prefix: prefix)

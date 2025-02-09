@@ -11,24 +11,20 @@ import OSLog
 /// Run Winetricks verbs
 public struct Winetricks: Hashable, Equatable, Sendable {
     let executable: URL
-    let prefix: Prefix
+    let environment: [String: String]
     
     /// Create a Winetricks instance
     ///
     /// - Parameters:
-    ///   - prefix: The prefix to use in wine.
-    public init(prefix: Prefix) {
+    ///   - environment: The environment for winetricks.
+    public init(environment: [String: String]) {
         self.executable = Bundle.module.url(forResource: "winetricks", withExtension: "sh")!
-        self.prefix = prefix
+        self.environment = environment
     }
     
-    /// Create a Winetricks instance
-    ///
-    /// - Parameters:
-    ///   - url: The prefix to use in wine.
-    public init(prefix url: URL) {
+    init(wine: Wine) {
         self.executable = Bundle.module.url(forResource: "winetricks", withExtension: "sh")!
-        self.prefix = Prefix(url: url)
+        self.environment = wine.environment
     }
     
     /// Run a verb from the category ``Winetricks/App``
@@ -69,7 +65,7 @@ public struct Winetricks: Hashable, Equatable, Sendable {
     internal func run(
         verb: String
     ) async throws {
-        let process = WineProcess(winetricks: self, verb: verb)
+        let process = WineProcess(winetricks: self, verb: verb, environment: environment)
         let stream = TaskManager.shared.runSystem(process)
         let logger = Logger(process: process)
         

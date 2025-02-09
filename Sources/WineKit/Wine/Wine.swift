@@ -74,6 +74,17 @@ public struct Wine: Hashable, Equatable, Sendable {
         WineCommands(wine: self)
     }
     
+    public var winetricks: Winetricks {
+        Winetricks(wine: self)
+    }
+    
+    var environment: [String: String] {
+        let environment = ["WINE": executable.path(percentEncoded: false)]
+        return environment.merging(prefix.environment) { old, _ in
+            old
+        }
+    }
+    
     // MARK: - User
     
     /// Run a command in wine
