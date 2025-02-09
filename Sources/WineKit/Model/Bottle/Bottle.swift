@@ -45,7 +45,7 @@ public struct Bottle: Identifiable, Hashable, Equatable, Comparable, Sendable {
     
     /// Initialize a ``Bottle`` from the given prefix
     ///
-    /// - Parameter url: The ``Prefix`` of the bottle.
+    /// - Parameter prefix: The ``Prefix`` of the bottle.
     public init(prefix: Prefix) throws {
         let url = prefix.url
         self.prefix = prefix
@@ -65,6 +65,7 @@ public struct Bottle: Identifiable, Hashable, Equatable, Comparable, Sendable {
     ///   - name: The name of the bottle.
     ///   - icon: The icon of the bottle.
     ///   - url: The URL of the bottle.
+    ///   - wine: The wine environment of the bottle.
     ///
     /// The bottle will not be setup automatically. Use ``Wine/setup(windows:)`` in order to actually create the bottle on disk.
     public init(name: String, icon: BottleIcon, url: URL, wine: WineEnvironment) {

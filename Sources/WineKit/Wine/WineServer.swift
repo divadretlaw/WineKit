@@ -17,7 +17,7 @@ public struct WineServer: Hashable, Equatable, Sendable {
     ///
     /// - Parameters:
     ///   - executable: The wine server executable binary.
-    ///   - bottle: The prefix to use in wine.
+    ///   - prefix: The prefix to use in wine.
     public init(executable: URL, prefix: Prefix) {
         self.executable = executable
         self.prefix = prefix
@@ -27,7 +27,7 @@ public struct WineServer: Hashable, Equatable, Sendable {
     ///
     /// - Parameters:
     ///   - executable: The wine server executable binary.
-    ///   - bottle: The prefix to use in wine.
+    ///   - url: The prefix to use in wine.
     public init(executable: URL, prefix url: URL) {
         self.executable = executable
         self.prefix = Prefix(url: url)
@@ -37,7 +37,7 @@ public struct WineServer: Hashable, Equatable, Sendable {
     ///
     /// - Parameters:
     ///   - folder: The wine binary folder.
-    ///   - bottle: The prefix to use in wine.
+    ///   - prefix: The prefix to use in wine.
     public init(folder: URL, prefix: Prefix) {
         self.executable = folder.appending(path: "wineserver")
         self.prefix = prefix
@@ -47,7 +47,7 @@ public struct WineServer: Hashable, Equatable, Sendable {
     ///
     /// - Parameters:
     ///   - folder: The wine binary folder.
-    ///   - bottle: The prefix to use in wine.
+    ///   - url: The prefix to use in wine.
     public init(folder: URL, prefix url: URL) {
         self.executable = folder.appending(path: "wineserver")
         self.prefix = Prefix(url: url)

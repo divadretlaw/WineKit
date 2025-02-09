@@ -16,8 +16,8 @@ public struct Winetricks: Hashable, Equatable, Sendable {
     /// Create a Winetricks instance
     ///
     /// - Parameters:
-    ///   - bottle: The prefix to use in wine.
-    public init(executable: URL, prefix: Prefix) {
+    ///   - prefix: The prefix to use in wine.
+    public init(prefix: Prefix) {
         self.executable = Bundle.module.url(forResource: "winetricks", withExtension: "sh")!
         self.prefix = prefix
     }
@@ -25,7 +25,7 @@ public struct Winetricks: Hashable, Equatable, Sendable {
     /// Create a Winetricks instance
     ///
     /// - Parameters:
-    ///   - bottle: The prefix to use in wine.
+    ///   - url: The prefix to use in wine.
     public init(prefix url: URL) {
         self.executable = Bundle.module.url(forResource: "winetricks", withExtension: "sh")!
         self.prefix = Prefix(url: url)

@@ -14,7 +14,7 @@ public final class TaskManager: ObservableObject, @unchecked Sendable {
     @Published public private(set) var userTasks: Set<WineProcess>
     @Published public private(set) var systemTasks: Set<WineProcess>
     
-    private let lock: NSLock
+    private let lock: NSLocking
     
     private init() {
         self.userTasks = []

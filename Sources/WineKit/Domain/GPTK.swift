@@ -38,8 +38,10 @@ public struct GPTK: Hashable, Equatable, Codable, Sendable {
             }
         }
         
-        if dxr, let device = MTLCreateSystemDefaultDevice(), device.supportsRaytracing {
-            environment["D3DM_SUPPORT_DXR"] = "1"
+        if let device = MTLCreateSystemDefaultDevice(), device.supportsRaytracing {
+            if dxr {
+                environment["D3DM_SUPPORT_DXR"] = "1"
+            }
         }
         
         if hud {

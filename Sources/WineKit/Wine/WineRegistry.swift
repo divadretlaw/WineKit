@@ -19,8 +19,8 @@ public final class WineRegistry: Sendable {
     /// Add an entry to the registry
     ///
     /// - Parameters:
-    ///   - path: The registry key path.
-    ///   - key: The name of the key.
+    ///   - keyPath: The registry key path.
+    ///   - name: The name of the key.
     ///   - value: The data to write to.
     ///   - type: The ``RegistryType`` of the value.
     public func add(
@@ -35,8 +35,8 @@ public final class WineRegistry: Sendable {
     /// Query the registry
     ///
     /// - Parameters:
-    ///   - path: The registry key path.
-    ///   - key: The name of the key.
+    ///   - keyPath: The registry key path.
+    ///   - name: The name of the key.
     ///   - type: The ``RegistryType`` of the value.
     ///   - fallback: The fallback value in case the given key/value couldn't be found. Defaults to empty String.
     /// - Returns: The read value.
@@ -70,8 +70,8 @@ public final class WineRegistry: Sendable {
     /// Delete an entry from the registry
     ///
     /// - Parameters:
-    ///   - path: The registry key path.
-    ///   - key: The name of the key.
+    ///   - keyPath: The registry key path.
+    ///   - name: The name of the key.
     ///   - value: The data to write to.
     ///   - type: The ``RegistryType`` of the value.
     public func delete(
@@ -119,7 +119,7 @@ public final class WineRegistry: Sendable {
     
     /// Change the build version of Windows used by this wine instance
     ///
-    /// - Parameter windowsVersion: The build version of Windows to use.
+    /// - Parameter buildVersion: The build version of Windows to use.
     ///
     public func changeBuildVersion(_ buildVersion: Int) async throws {
         try await changeBuildVersion(buildVersion.description)
@@ -127,7 +127,7 @@ public final class WineRegistry: Sendable {
     
     /// Change the build version of Windows used by this wine instance
     ///
-    /// - Parameter windowsVersion: The build version of Windows to use.
+    /// - Parameter buildVersion: The build version of Windows to use.
     ///
     public func changeBuildVersion(_ buildVersion: String) async throws {
         try await add(

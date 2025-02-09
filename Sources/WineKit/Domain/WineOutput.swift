@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import OSLog
 
 /// The output of a ``WineProcess``
 public enum WineOutput: Hashable, Equatable, Sendable {

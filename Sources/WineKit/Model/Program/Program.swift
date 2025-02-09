@@ -109,7 +109,7 @@ public struct Program: Identifiable, Hashable, Equatable, Comparable, Sendable {
     
     /// Write the program settings to a ``Bottle``
     ///
-    /// - Parameter file: The ``Bottle`` to store the program settings in.
+    /// - Parameter bottle: The ``Bottle`` to store the program settings in.
     public func write(to bottle: Bottle) async throws {
         let file = url(relativeTo: bottle.url, create: true)
         try await write(to: file)
@@ -133,7 +133,7 @@ public struct Program: Identifiable, Hashable, Equatable, Comparable, Sendable {
     
     /// Load the program settings from a ``Bottle``
     ///
-    /// - Parameter file: The ``Bottle`` to load the program settings from.
+    /// - Parameter bottle: The ``Bottle`` to load the program settings from.
     public mutating func load(from bottle: Bottle) async throws {
         let file = url(relativeTo: bottle.url)
         try await load(from: file)
