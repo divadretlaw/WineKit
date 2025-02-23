@@ -4,7 +4,7 @@
 // 
 // Source: https://github.com/Winetricks/winetricks
 //
-// Automatically generated on 9.2.2025.
+// Automatically generated on 1.3.2025.
 //
 
 import Foundation
